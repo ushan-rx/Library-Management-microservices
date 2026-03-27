@@ -7,3 +7,32 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum AuthRole {
+  ADMIN
+  LIBRARIAN
+  MEMBER
+}
+
+enum AuthUserStatus {
+  ACTIVE
+  INACTIVE
+  LOCKED
+}
+
+model AuthUser {
+  id           String         @id @default(uuid()) @db.Uuid
+  username     String         @unique @db.VarChar(50)
+  email        String         @unique @db.VarChar(255)
+  passwordHash String         @db.VarChar(255)
+  role         AuthRole
+  status       AuthUserStatus @default(ACTIVE)
+  lastLoginAt  DateTime?      @db.Timestamptz(6)
+  createdAt    DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime       @updatedAt @db.Timestamptz(6)
+  deletedAt    DateTime?      @db.Timestamptz(6)
+
+  @@index([role])
+  @@index([status])
+  @@map("auth_users")
+}
