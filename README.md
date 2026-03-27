@@ -7,6 +7,7 @@ Current implementation status:
 - Phase 0 baseline audit completed
 - Phase 1 shared Docker and Prisma foundation completed
 - Phase 2 API Gateway skeleton completed
+- Phase 4 gateway auth integration completed
 - the API Gateway is now runnable for health and base middleware/error checks
 - the Auth Service is now runnable for register, login, token validation, profile, and health checks
 - business service logic has not started yet
@@ -68,7 +69,15 @@ Then check:
 ```bash
 GET http://localhost:3000/health
 GET http://localhost:3000/missing
+GET http://localhost:3000/members
 ```
+
+Gateway auth behavior:
+
+- `/health` stays public
+- `/auth/login` and `/auth/register` stay public at the gateway layer
+- protected route groups such as `/members`, `/books`, `/categories`, `/borrows`, `/fines`, and `/auth/profile` now reject missing or invalid bearer tokens
+- valid bearer tokens are accepted by the gateway auth layer and allowed through to later routing stages
 
 Auth service check commands:
 

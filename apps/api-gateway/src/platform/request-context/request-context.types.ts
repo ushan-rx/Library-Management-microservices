@@ -7,5 +7,7 @@ export interface RequestWithContext extends Request {
     id: string;
     role: string;
     username?: string;
+    email?: string;
   };
+  forwardHeaders?: Record<string, string>;
 }

@@ -23,6 +23,22 @@ export class RouteAccessPolicyService {
     return false;
   }
 
+  isProtectedRoute(method: string, path: string): boolean {
+    if (this.isPublicRoute(method, path)) {
+      return false;
+    }
+
+    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+
+    return this.serviceRegistry
+      .getProtectedRoutePrefixes()
+      .some(
+        (protectedPrefix) =>
+          normalizedPath === protectedPrefix ||
+          normalizedPath.startsWith(`${protectedPrefix}/`),
+      );
+  }
+
   getPolicySummary(): { publicRoutes: string[]; protectedPrefixes: string[] } {
     return {
       publicRoutes: this.serviceRegistry.getPublicRoutePrefixes(),

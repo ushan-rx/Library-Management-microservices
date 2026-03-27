@@ -28,6 +28,20 @@ describe('RouteAccessPolicyService', () => {
     expect(routeAccessPolicy.isPublicRoute('GET', '/auth/profile')).toBe(false);
   });
 
+  it('marks protected route groups for auth enforcement', () => {
+    expect(routeAccessPolicy.isProtectedRoute('GET', '/members')).toBe(true);
+    expect(routeAccessPolicy.isProtectedRoute('GET', '/members/123')).toBe(
+      true,
+    );
+    expect(routeAccessPolicy.isProtectedRoute('GET', '/auth/profile')).toBe(
+      true,
+    );
+    expect(routeAccessPolicy.isProtectedRoute('POST', '/auth/login')).toBe(
+      false,
+    );
+    expect(routeAccessPolicy.isProtectedRoute('GET', '/health')).toBe(false);
+  });
+
   it('summarizes the policy using the gateway route skeleton', () => {
     const summary = routeAccessPolicy.getPolicySummary();
 
