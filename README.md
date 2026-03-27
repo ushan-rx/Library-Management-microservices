@@ -5,8 +5,12 @@ NestJS monorepo for a Library Management System implemented as an API Gateway pl
 Current implementation status:
 
 - Phase 0 baseline audit completed
-- service apps exist as Nest scaffolds only
-- business logic has not started yet
+- Phase 1 shared Docker and Prisma foundation completed
+- Phase 2 API Gateway skeleton completed
+- Phase 4 gateway auth integration completed
+- the API Gateway is now runnable for health and base middleware/error checks
+- the Auth Service is now runnable for register, login, token validation, profile, and health checks
+- business service logic has not started yet
 
 Service apps:
 
@@ -52,6 +56,43 @@ Phase 1 infrastructure commands:
 npm run docker:up
 npm run docker:down
 npm run docker:logs:postgres
+```
+
+Gateway check commands:
+
+```bash
+npm run start
+```
+
+Then check:
+
+```bash
+GET http://localhost:3000/health
+GET http://localhost:3000/missing
+GET http://localhost:3000/members
+```
+
+Gateway auth behavior:
+
+- `/health` stays public
+- `/auth/login` and `/auth/register` stay public at the gateway layer
+- protected route groups such as `/members`, `/books`, `/categories`, `/borrows`, `/fines`, and `/auth/profile` now reject missing or invalid bearer tokens
+- valid bearer tokens are accepted by the gateway auth layer and allowed through to later routing stages
+
+Auth service check commands:
+
+```bash
+npm run start:auth-service
+```
+
+Then check:
+
+```bash
+GET http://localhost:3001/auth/health
+POST http://localhost:3001/auth/register
+POST http://localhost:3001/auth/login
+GET http://localhost:3001/auth/profile
+POST http://localhost:3001/auth/validate
 ```
 
 Prisma validation commands:
