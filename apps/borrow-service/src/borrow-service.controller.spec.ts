@@ -11,7 +11,9 @@ describe('BorrowServiceController', () => {
       providers: [BorrowServiceService],
     }).compile();
 
-    borrowServiceController = app.get<BorrowServiceController>(BorrowServiceController);
+    borrowServiceController = app.get<BorrowServiceController>(
+      BorrowServiceController,
+    );
   });
 
   describe('root', () => {

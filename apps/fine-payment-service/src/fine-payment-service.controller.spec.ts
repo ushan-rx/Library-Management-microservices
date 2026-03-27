@@ -11,7 +11,9 @@ describe('FinePaymentServiceController', () => {
       providers: [FinePaymentServiceService],
     }).compile();
 
-    finePaymentServiceController = app.get<FinePaymentServiceController>(FinePaymentServiceController);
+    finePaymentServiceController = app.get<FinePaymentServiceController>(
+      FinePaymentServiceController,
+    );
   });
 
   describe('root', () => {

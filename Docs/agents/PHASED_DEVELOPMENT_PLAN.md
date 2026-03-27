@@ -4,12 +4,12 @@
 This document defines the phased implementation plan for the Library Management System microservices monorepo. It is designed for controlled, test-driven, traceable delivery. The project must be implemented in phases, with each phase producing a clear outcome and passing the required tests before moving forward.
 
 This file is intended to be used together with:
-- `AGENT_GUIDE.md`
-- `README_SYSTEM.md`
-- `API_CONTRACTS.md`
-- `DATA_SCHEMAS.md`
-- `API_GATEWAY.md`
-- `AUTH_ARCHITECTURE.md`
+- `docs/agents/AGENT_GUIDE.md`
+- `docs/specs/README_SYSTEM.md`
+- `docs/specs/API_CONTRACTS.md`
+- `docs/specs/DATA_SCHEMAS.md`
+- `docs/specs/API_GATEWAY.md`
+- `docs/specs/AUTH_ARCHITECTURE.md`
 - service-specific spec files
 
 ---
@@ -19,7 +19,7 @@ This file is intended to be used together with:
 - do not start a new phase while required tests from the current phase are failing
 - stop after each phase and ask the user whether to proceed
 - update changelogs continuously
-- record required spec changes in `SPEC_CHANGE_REQUESTS.md`
+- record required spec changes in `docs/agents/SPEC_CHANGE_REQUESTS.md`
 - maintain implementation alignment with approved specs
 
 ---
@@ -35,7 +35,7 @@ Establish a reliable baseline of the monorepo and verify that the current scaffo
 - compare current state with the approved specs
 - create or verify required docs and operating files
 - create initial changelog files for each service and gateway
-- create `SPEC_CHANGE_REQUESTS.md` if missing
+- create `docs/agents/SPEC_CHANGE_REQUESTS.md` if missing
 - create root testing strategy notes if needed
 - identify gaps between scaffold state and target state
 
@@ -65,7 +65,7 @@ Prepare the shared infrastructure and reusable development foundation for all se
 
 ### Tasks
 - create `docker-compose.yml` for PostgreSQL and any approved development resources
-- define environment variable strategy and `.env.example`
+- define environment variable strategy and root `.env.example`
 - establish naming conventions for service ports, DB names, and secrets
 - add shared base documentation for startup and configuration
 - decide the exact local run model for services and gateway
@@ -96,7 +96,7 @@ Prepare the shared infrastructure and reusable development foundation for all se
 Prepare the API Gateway skeleton and shared platform concerns without implementing full business routes.
 
 ### Tasks
-- scaffold gateway structure according to `API_GATEWAY.md`
+- scaffold gateway structure according to `docs/specs/API_GATEWAY.md`
 - implement health route and base routing structure
 - add structured request logging middleware/interceptor design
 - add correlation id strategy
@@ -165,7 +165,7 @@ Connect gateway behavior to the authentication model so protected downstream acc
 
 ### Tasks
 - implement gateway auth middleware/guard flow
-- decide token validation strategy per `AUTH_ARCHITECTURE.md`
+- decide token validation strategy per `docs/specs/AUTH_ARCHITECTURE.md`
 - propagate authenticated context safely downstream where approved
 - define public auth routes at gateway
 n- protect selected non-public routes

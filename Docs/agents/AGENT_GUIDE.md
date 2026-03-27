@@ -38,7 +38,7 @@ If there is any conflict:
 1. security and correctness come first
 2. explicit service spec comes before general summary text
 3. API contracts and data schemas must not be changed casually
-4. if a real conflict exists, pause implementation of the conflicting part and record it in `SPEC_CHANGE_REQUESTS.md`
+4. if a real conflict exists, pause implementation of the conflicting part and record it in `docs/agents/SPEC_CHANGE_REQUESTS.md`
 
 ---
 
@@ -63,7 +63,7 @@ Not allowed:
 
 ### 2. Build in phases only
 
-The agent must execute work phase by phase according to `PHASED_DEVELOPMENT_PLAN.md`.
+The agent must execute work phase by phase according to `docs/agents/PHASED_DEVELOPMENT_PLAN.md`.
 The agent must not jump ahead or partially implement future phases unless a current phase explicitly requires prerequisites.
 
 ### 3. Use TDD for all meaningful business behavior
@@ -80,6 +80,8 @@ For each completed phase:
 - run tests
 - confirm whether they pass or fail
 - summarize what changed
+- provide a brief plain-language note explaining what the completed phase does
+- provide a concise Git commit message that accurately describes the completed phase
 - ask the user to proceed before starting the next phase
 
 ### 4. Stop at phase boundaries
@@ -99,7 +101,7 @@ If the implementation reveals that a spec must be updated, the agent must not si
 Instead:
 
 - implement only if the change is safe and explicitly necessary for correctness, or pause if approval is required
-- document the proposed change in `SPEC_CHANGE_REQUESTS.md`
+- document the proposed change in `docs/agents/SPEC_CHANGE_REQUESTS.md`
 - explain the reason, affected files, and impact
 - keep the implementation aligned with the latest approved version of the spec
 
@@ -146,19 +148,19 @@ Application services may run locally during development if that speeds iteration
 
 The agent must ensure the repository contains and maintains the following classes of files.
 
-### Root-level files
+### Repository operating files
 
-- `README_SYSTEM.md`
-- `API_CONTRACTS.md`
-- `DATA_SCHEMAS.md`
-- `API_GATEWAY.md`
-- `AUTH_ARCHITECTURE.md`
-- `PHASED_DEVELOPMENT_PLAN.md`
-- `AGENT_GUIDE.md`
-- `SPEC_CHANGE_REQUESTS.md`
+- `docs/specs/README_SYSTEM.md`
+- `docs/specs/API_CONTRACTS.md`
+- `docs/specs/DATA_SCHEMAS.md`
+- `docs/specs/API_GATEWAY.md`
+- `docs/specs/AUTH_ARCHITECTURE.md`
+- `docs/agents/PHASED_DEVELOPMENT_PLAN.md`
+- `docs/agents/AGENT_GUIDE.md`
+- `docs/agents/SPEC_CHANGE_REQUESTS.md`
 - `docker-compose.yml`
 - `.env.example`
-- root `README.md`
+- `README.md`
 
 ### Service-specific docs
 
@@ -206,7 +208,7 @@ Rules:
 
 ## Spec Change Request Format
 
-All required changes to approved specs must go into `SPEC_CHANGE_REQUESTS.md`.
+All required changes to approved specs must go into `docs/agents/SPEC_CHANGE_REQUESTS.md`.
 
 Use this format:
 
@@ -216,7 +218,7 @@ Use this format:
 - Date: 2026-03-27T18:45:00+05:30
 - Status: proposed | approved | rejected | implemented
 - Requested by: agent
-- Affected specs: API_CONTRACTS.md, DATA_SCHEMAS.md
+- Affected specs: docs/specs/API_CONTRACTS.md, docs/specs/DATA_SCHEMAS.md
 - Affected services: borrow-service, fine-payment-service
 - Reason:
   The original fine creation flow does not define whether fine records can be created before return is processed.
@@ -284,7 +286,7 @@ No new phase begins with known failing required tests from an earlier completed 
 
 ## Phase Execution Protocol
 
-For each phase in `PHASED_DEVELOPMENT_PLAN.md`, the agent must follow this sequence:
+For each phase in `docs/agents/PHASED_DEVELOPMENT_PLAN.md`, the agent must follow this sequence:
 
 1. Read the phase scope and dependencies.
 2. State what will be done in the current phase only.
@@ -294,7 +296,9 @@ For each phase in `PHASED_DEVELOPMENT_PLAN.md`, the agent must follow this seque
 6. Update service changelogs.
 7. Run tests.
 8. Summarize results.
-9. Ask the user whether to proceed to the next phase.
+9. Provide a brief note explaining what the completed phase does.
+10. Provide a concise Git commit message for the completed phase.
+11. Ask the user whether to proceed to the next phase.
 
 The agent must not combine multiple phases into one large change unless the plan explicitly defines them as inseparable.
 
@@ -433,6 +437,8 @@ At the end of each phase, the agent should report:
 - what was completed
 - what tests were run
 - whether tests passed
+- a brief note explaining what the phase delivers or enables
+- a suggested Git commit message for the completed phase
 - any non-blocking notes
 - changelog/spec updates made
 - a clear question asking whether to continue to the next phase
@@ -457,6 +463,14 @@ Tests run:
 Result:
 
 - all tests passed
+
+What this phase does:
+
+- establishes the member management capability used by staff
+
+Suggested commit message:
+
+- `feat(member-service): implement member CRUD with validation`
 
 Spec changes:
 

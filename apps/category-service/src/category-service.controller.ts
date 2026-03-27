@@ -3,7 +3,9 @@ import { CategoryServiceService } from './category-service.service';
 
 @Controller()
 export class CategoryServiceController {
-  constructor(private readonly categoryServiceService: CategoryServiceService) {}
+  constructor(
+    private readonly categoryServiceService: CategoryServiceService,
+  ) {}
 
   @Get()
   getHello(): string {
