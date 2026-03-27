@@ -5,8 +5,10 @@ NestJS monorepo for a Library Management System implemented as an API Gateway pl
 Current implementation status:
 
 - Phase 0 baseline audit completed
-- service apps exist as Nest scaffolds only
-- business logic has not started yet
+- Phase 1 shared Docker and Prisma foundation completed
+- Phase 2 API Gateway skeleton completed
+- the API Gateway is now runnable for health and base middleware/error checks
+- business service logic has not started yet
 
 Service apps:
 
@@ -52,6 +54,19 @@ Phase 1 infrastructure commands:
 npm run docker:up
 npm run docker:down
 npm run docker:logs:postgres
+```
+
+Gateway check commands:
+
+```bash
+npm run start
+```
+
+Then check:
+
+```bash
+GET http://localhost:3000/health
+GET http://localhost:3000/missing
 ```
 
 Prisma validation commands:
