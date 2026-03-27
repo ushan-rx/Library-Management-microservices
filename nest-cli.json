@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/library-system-microservices/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/library-system-microservices/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/api-gateway",
+  "projects": {
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
+    },
+    "auth-service": {
+      "type": "application",
+      "root": "apps/auth-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/auth-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/auth-service/tsconfig.app.json"
+      }
+    },
+    "book-service": {
+      "type": "application",
+      "root": "apps/book-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/book-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/book-service/tsconfig.app.json"
+      }
+    },
+    "borrow-service": {
+      "type": "application",
+      "root": "apps/borrow-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/borrow-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/borrow-service/tsconfig.app.json"
+      }
+    },
+    "category-service": {
+      "type": "application",
+      "root": "apps/category-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/category-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/category-service/tsconfig.app.json"
+      }
+    },
+    "fine-payment-service": {
+      "type": "application",
+      "root": "apps/fine-payment-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/fine-payment-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/fine-payment-service/tsconfig.app.json"
+      }
+    },
+    "member-service": {
+      "type": "application",
+      "root": "apps/member-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/member-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/member-service/tsconfig.app.json"
+      }
+    }
+  }
+}
