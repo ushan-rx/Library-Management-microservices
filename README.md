@@ -8,6 +8,7 @@ Current implementation status:
 - Phase 1 shared Docker and Prisma foundation completed
 - Phase 2 API Gateway skeleton completed
 - the API Gateway is now runnable for health and base middleware/error checks
+- the Auth Service is now runnable for register, login, token validation, profile, and health checks
 - business service logic has not started yet
 
 Service apps:
@@ -67,6 +68,22 @@ Then check:
 ```bash
 GET http://localhost:3000/health
 GET http://localhost:3000/missing
+```
+
+Auth service check commands:
+
+```bash
+npm run start:auth-service
+```
+
+Then check:
+
+```bash
+GET http://localhost:3001/auth/health
+POST http://localhost:3001/auth/register
+POST http://localhost:3001/auth/login
+GET http://localhost:3001/auth/profile
+POST http://localhost:3001/auth/validate
 ```
 
 Prisma validation commands:
