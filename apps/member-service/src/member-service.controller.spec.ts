@@ -11,7 +11,9 @@ describe('MemberServiceController', () => {
       providers: [MemberServiceService],
     }).compile();
 
-    memberServiceController = app.get<MemberServiceController>(MemberServiceController);
+    memberServiceController = app.get<MemberServiceController>(
+      MemberServiceController,
+    );
   });
 
   describe('root', () => {

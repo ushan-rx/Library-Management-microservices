@@ -1,0 +1,4 @@
+# Phase 1 will add the Dockerized resource layer.
+# This placeholder exists so the required operating file is present during Phase 0.
+
+services: {}

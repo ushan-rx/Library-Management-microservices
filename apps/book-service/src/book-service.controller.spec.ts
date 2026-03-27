@@ -11,7 +11,9 @@ describe('BookServiceController', () => {
       providers: [BookServiceService],
     }).compile();
 
-    bookServiceController = app.get<BookServiceController>(BookServiceController);
+    bookServiceController = app.get<BookServiceController>(
+      BookServiceController,
+    );
   });
 
   describe('root', () => {
