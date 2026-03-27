@@ -46,6 +46,25 @@ npm run lint
 npm run test:e2e
 ```
 
+Phase 1 infrastructure commands:
+
+```bash
+npm run docker:up
+npm run docker:down
+npm run docker:logs:postgres
+```
+
+Prisma validation commands:
+
+```bash
+npm run prisma:validate:auth-service
+npm run prisma:validate:member-service
+npm run prisma:validate:category-service
+npm run prisma:validate:book-service
+npm run prisma:validate:borrow-service
+npm run prisma:validate:fine-payment-service
+```
+
 Per-service build commands:
 
 ```bash
