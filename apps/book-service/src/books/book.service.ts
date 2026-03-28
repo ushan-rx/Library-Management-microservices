@@ -5,7 +5,7 @@ import {
   bookNotFound,
 } from '../common/book-response.helpers';
 import { CategoryClient } from '../integrations/category.client';
-import { BOOK_REPOSITORY, BookRepository } from './book.repository';
+import { BOOK_REPOSITORY } from './book.repository';
 import { CreateBookDto } from './dto/create-book.dto';
 import { InventoryAdjustDto } from './dto/inventory-adjust.dto';
 import { ListBooksQueryDto } from './dto/list-books.query.dto';
@@ -13,6 +13,7 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { BookStatus } from './enums/book-status.enum';
 import { InventoryAdjustmentType } from './enums/inventory-adjustment-type.enum';
 import { Book } from './interfaces/book.interface';
+import type { BookRepository } from './book.repository';
 
 @Injectable()
 export class BookService {
