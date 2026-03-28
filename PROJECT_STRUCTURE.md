@@ -1,99 +1,129 @@
 # Project Structure
 
-This document captures the current folder structure of the `library-system-microservices` codebase.
+This document captures the current high-level structure of the `library-system-microservices` repository.
 
 ```text
 .
 |-- apps
 |   |-- api-gateway
 |   |   |-- src
-|   |   |   |-- api-gateway.controller.spec.ts
-|   |   |   |-- api-gateway.controller.ts
+|   |   |   |-- config
+|   |   |   |-- health
+|   |   |   |-- platform
+|   |   |   |-- routing
+|   |   |   |-- services
 |   |   |   |-- api-gateway.module.ts
-|   |   |   |-- api-gateway.service.ts
+|   |   |   |-- bootstrap.ts
 |   |   |   +-- main.ts
-|   |   |-- test
-|   |   |   |-- app.e2e-spec.ts
-|   |   |   +-- jest-e2e.json
-|   |   +-- tsconfig.app.json
+|   |   +-- test
+|   |       |-- app.e2e-spec.ts
+|   |       |-- gateway-business-flows.e2e-spec.ts
+|   |       +-- jest-e2e.json
 |   |-- auth-service
+|   |   |-- prisma
+|   |   |   +-- schema.prisma
 |   |   |-- src
-|   |   |   |-- auth-service.controller.spec.ts
-|   |   |   |-- auth-service.controller.ts
+|   |   |   |-- auth
+|   |   |   |-- common
+|   |   |   |-- prisma
+|   |   |   |-- users
 |   |   |   |-- auth-service.module.ts
-|   |   |   |-- auth-service.service.ts
+|   |   |   |-- bootstrap.ts
 |   |   |   +-- main.ts
-|   |   |-- test
-|   |   |   |-- app.e2e-spec.ts
-|   |   |   +-- jest-e2e.json
-|   |   +-- tsconfig.app.json
-|   |-- book-service
+|   |   +-- test
+|   |       +-- app.e2e-spec.ts
+|   |-- member-service
+|   |   |-- prisma
+|   |   |   +-- schema.prisma
 |   |   |-- src
-|   |   |   |-- book-service.controller.spec.ts
-|   |   |   |-- book-service.controller.ts
-|   |   |   |-- book-service.module.ts
-|   |   |   |-- book-service.service.ts
-|   |   |   +-- main.ts
-|   |   |-- test
-|   |   |   |-- app.e2e-spec.ts
-|   |   |   +-- jest-e2e.json
-|   |   +-- tsconfig.app.json
-|   |-- borrow-service
-|   |   |-- src
-|   |   |   |-- borrow-service.controller.spec.ts
-|   |   |   |-- borrow-service.controller.ts
-|   |   |   |-- borrow-service.module.ts
-|   |   |   |-- borrow-service.service.ts
-|   |   |   +-- main.ts
-|   |   |-- test
-|   |   |   |-- app.e2e-spec.ts
-|   |   |   +-- jest-e2e.json
-|   |   +-- tsconfig.app.json
+|   |   |   |-- common
+|   |   |   |-- members
+|   |   |   |-- platform
+|   |   |   |-- prisma
+|   |   |   |-- bootstrap.ts
+|   |   |   |-- main.ts
+|   |   |   +-- member-service.module.ts
+|   |   +-- test
+|   |       +-- app.e2e-spec.ts
 |   |-- category-service
+|   |   |-- prisma
+|   |   |   +-- schema.prisma
 |   |   |-- src
-|   |   |   |-- category-service.controller.spec.ts
-|   |   |   |-- category-service.controller.ts
+|   |   |   |-- categories
+|   |   |   |-- common
+|   |   |   |-- platform
+|   |   |   |-- prisma
+|   |   |   |-- bootstrap.ts
 |   |   |   |-- category-service.module.ts
-|   |   |   |-- category-service.service.ts
 |   |   |   +-- main.ts
-|   |   |-- test
-|   |   |   |-- app.e2e-spec.ts
-|   |   |   +-- jest-e2e.json
-|   |   +-- tsconfig.app.json
-|   |-- fine-payment-service
+|   |   +-- test
+|   |       +-- app.e2e-spec.ts
+|   |-- book-service
+|   |   |-- prisma
+|   |   |   +-- schema.prisma
 |   |   |-- src
-|   |   |   |-- fine-payment-service.controller.spec.ts
-|   |   |   |-- fine-payment-service.controller.ts
-|   |   |   |-- fine-payment-service.module.ts
-|   |   |   |-- fine-payment-service.service.ts
+|   |   |   |-- books
+|   |   |   |-- common
+|   |   |   |-- integrations
+|   |   |   |-- platform
+|   |   |   |-- prisma
+|   |   |   |-- book-service.module.ts
+|   |   |   |-- bootstrap.ts
 |   |   |   +-- main.ts
-|   |   |-- test
-|   |   |   |-- app.e2e-spec.ts
-|   |   |   +-- jest-e2e.json
-|   |   +-- tsconfig.app.json
-|   +-- member-service
-|       |-- src
-|       |   |-- main.ts
-|       |   |-- member-service.controller.spec.ts
-|       |   |-- member-service.controller.ts
-|       |   |-- member-service.module.ts
-|       |   +-- member-service.service.ts
-|       |-- test
-|       |   |-- app.e2e-spec.ts
-|       |   +-- jest-e2e.json
-|       +-- tsconfig.app.json
-|-- .gitignore
-|-- .prettierrc
-|-- eslint.config.mjs
-|-- nest-cli.json
+|   |   +-- test
+|   |       +-- app.e2e-spec.ts
+|   |-- borrow-service
+|   |   |-- prisma
+|   |   |   +-- schema.prisma
+|   |   |-- src
+|   |   |   |-- borrows
+|   |   |   |-- common
+|   |   |   |-- integrations
+|   |   |   |-- platform
+|   |   |   |-- prisma
+|   |   |   |-- bootstrap.ts
+|   |   |   |-- borrow-service.module.ts
+|   |   |   +-- main.ts
+|   |   +-- test
+|   |       +-- app.e2e-spec.ts
+|   |-- fine-payment-service
+|   |   |-- prisma
+|   |   |   +-- schema.prisma
+|   |   |-- src
+|   |   |   |-- fines
+|   |   |   |-- common
+|   |   |   |-- platform
+|   |   |   |-- prisma
+|   |   |   |-- bootstrap.ts
+|   |   |   |-- fine-payment-service.module.ts
+|   |   |   +-- main.ts
+|   |   +-- test
+|   |       +-- app.e2e-spec.ts
+|   +-- shared
+|       +-- configure-swagger.ts
+|-- docker
+|   +-- postgres
+|       +-- init
+|           +-- 01-create-databases.sh
+|-- docs
+|   |-- agents
+|   |-- changelogs
+|   |-- services
+|   |-- shared
+|   +-- specs
+|-- test
+|   +-- phase-1-foundation.spec.ts
+|-- .env.example
+|-- docker-compose.yml
+|-- PROJECT_STRUCTURE.md
+|-- README.md
 |-- package.json
 |-- package-lock.json
-|-- README.md
-|-- tsconfig.build.json
-+-- tsconfig.json
 ```
 
 ## Notes
 
-- `node_modules` is intentionally excluded from this structure file.
-- The repository is organized as a NestJS monorepo with multiple microservice apps under `apps/`.
+- `node_modules` and `dist` are intentionally excluded from this structure file.
+- Each business service owns its own Prisma schema and persistence layer.
+- The API Gateway is the public entry point and the gateway e2e suite exercises full business flows through real service instances.
+- Canonical project specifications and delivery rules live under `docs/`.

@@ -53,3 +53,12 @@
 - Files: apps/api-gateway/src/platform/request-context/request-context.types.ts, apps/api-gateway/src/platform/logging/request-logging.interceptor.ts, apps/api-gateway/src/platform/logging/request-logging.interceptor.spec.ts, apps/api-gateway/src/routing/gateway-proxy.service.ts, README.md
 - Impact: Gateway logs are more useful during debugging because they now show who made the request and which downstream service group handled it.
 - Notes: No API contract deviation.
+
+## 2026-03-28T19:25:00+05:30
+
+- Scope: api-gateway
+- Type: docs
+- Summary: Finalized release-candidate documentation by aligning README setup guidance, refreshing the repository structure reference, and recording the final verification summary.
+- Files: README.md, PROJECT_STRUCTURE.md, docs/agents/PHASE_14_RELEASE_CANDIDATE.md
+- Impact: The repository handoff docs now match the implemented system and the final verification state.
+- Notes: No API contract deviation.

@@ -1,24 +1,21 @@
 # Library System Microservices
 
-NestJS monorepo for a Library Management System implemented as an API Gateway plus six backend services.
+Library Management System backend built as a NestJS monorepo with an API Gateway and six domain services.
 
-Current implementation status:
+The system supports:
 
-- Phase 0 baseline audit completed
-- Phase 1 shared Docker and Prisma foundation completed
-- Phase 2 API Gateway skeleton completed
-- the API Gateway is now runnable for health and base middleware/error checks
-- the Auth Service is now runnable for register, login, token validation, profile, and health checks
-- the Member Service is now runnable for member CRUD, eligibility checks, and health checks
-- the Category Service is now runnable for category CRUD, existence checks, and health checks
-- the Book Service is now runnable for catalog CRUD, availability checks, and inventory updates
-- the Borrow Service is now runnable for borrow creation, returns, overdue checks, and downstream orchestration
-- the Fine Payment Service is now runnable for fine creation, payment recording, and fine lookups
-- Swagger documentation is now exposed for the gateway and each service at `/docs` and `/docs-json`
-- the full backend flow is now verified through the gateway for register/login, category creation, book creation, member creation, borrow, return, and fine payment
-- downstream service calls now propagate correlation IDs and emit structured logs for request start, completion, and failure paths
+- authentication with JWT
+- member management
+- category management
+- book catalog and inventory management
+- borrow and return workflows
+- overdue fine creation and payment recording
+- gateway-based end-to-end request flow
+- Swagger documentation for the gateway and every service
 
-Service apps:
+## Architecture
+
+The backend is split into these applications:
 
 - `api-gateway`
 - `auth-service`
@@ -28,175 +25,198 @@ Service apps:
 - `borrow-service`
 - `fine-payment-service`
 
-Canonical project specifications live under `docs/`:
+Each business service owns its own persistence model and Prisma schema. Client traffic is intended to go through the API Gateway, while approved service-to-service communication happens directly over HTTP where required.
 
-- `docs/specs/README_SYSTEM.md`
-- `docs/specs/API_CONTRACTS.md`
-- `docs/specs/DATA_SCHEMAS.md`
-- `docs/specs/API_GATEWAY.md`
-- `docs/specs/AUTH_ARCHITECTURE.md`
-- `docs/services/*.md`
-- `docs/agents/AGENT_GUIDE.md`
-- `docs/agents/PHASED_DEVELOPMENT_PLAN.md`
-- `docs/agents/SPEC_CHANGE_REQUESTS.md`
+## Tech Stack
 
-Phase 0 operating notes:
+- NestJS
+- TypeScript
+- Prisma
+- PostgreSQL
+- Docker Compose
+- Jest
+- Swagger / OpenAPI
 
-- required operating files have been initialized
-- changelog files exist under `docs/changelogs/`
-- repository audit summary exists at `docs/agents/PHASE_0_REPOSITORY_AUDIT.md`
-- `docs/agents/SPEC_CHANGE_REQUESTS.md`, `docker-compose.yml`, and `.env.example` are placeholders for Phase 1 implementation
+## Services and Default Ports
 
-Useful commands:
+| Service | Port | Purpose |
+|---|---:|---|
+| API Gateway | `3000` | Public entry point, auth enforcement, request forwarding |
+| Auth Service | `3001` | Register, login, token validation, profile |
+| Member Service | `3002` | Member CRUD and borrow eligibility |
+| Book Service | `3003` | Book catalog, availability, inventory updates |
+| Category Service | `3004` | Category CRUD and existence checks |
+| Borrow Service | `3005` | Borrow creation, returns, overdue handling |
+| Fine Payment Service | `3006` | Fine records and payment workflows |
 
-```bash
-npm run build
-npm run test
-npm run lint
-npm run test:e2e
+## Repository Layout
+
+High-level structure:
+
+```text
+apps/
+  api-gateway/
+  auth-service/
+  member-service/
+  category-service/
+  book-service/
+  borrow-service/
+  fine-payment-service/
+  shared/
+docker/
+docs/
+test/
 ```
 
-Phase 1 infrastructure commands:
+Additional structure details are in [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md).
+
+## Documentation
+
+Canonical specifications and delivery docs are under `docs/`.
+
+Important references:
+
+- [docs/specs/README_SYSTEM.md](./docs/specs/README_SYSTEM.md)
+- [docs/specs/API_CONTRACTS.md](./docs/specs/API_CONTRACTS.md)
+- [docs/specs/DATA_SCHEMAS.md](./docs/specs/DATA_SCHEMAS.md)
+- [docs/specs/API_GATEWAY.md](./docs/specs/API_GATEWAY.md)
+- [docs/specs/AUTH_ARCHITECTURE.md](./docs/specs/AUTH_ARCHITECTURE.md)
+- [docs/agents/AGENT_GUIDE.md](./docs/agents/AGENT_GUIDE.md)
+- [docs/agents/PHASED_DEVELOPMENT_PLAN.md](./docs/agents/PHASED_DEVELOPMENT_PLAN.md)
+- [docs/agents/PHASE_14_RELEASE_CANDIDATE.md](./docs/agents/PHASE_14_RELEASE_CANDIDATE.md)
+
+## Prerequisites
+
+- Node.js
+- npm
+- Docker Desktop or Docker Engine with Compose support
+
+## Environment Setup
+
+Copy values from `.env.example` into your local environment as needed.
+
+Main environment file:
+
+- [`.env.example`](./.env.example)
+
+The project uses:
+
+- one Dockerized PostgreSQL container
+- one logical database per service
+- shared JWT secret between Auth Service and API Gateway
+
+## Installation
+
+```bash
+npm install
+```
+
+## Start Infrastructure
+
+Start PostgreSQL:
 
 ```bash
 npm run docker:up
-npm run docker:down
+```
+
+View PostgreSQL logs:
+
+```bash
 npm run docker:logs:postgres
 ```
 
-Gateway check commands:
+Stop PostgreSQL:
 
 ```bash
-npm run start
+npm run docker:down
 ```
 
-Then check:
+## Run the System Locally
 
-```bash
-GET http://localhost:3000/health
-GET http://localhost:3000/missing
-GET http://localhost:3000/docs
-GET http://localhost:3000/docs-json
-POST http://localhost:3000/auth/register
-POST http://localhost:3000/auth/login
-POST http://localhost:3000/categories
-POST http://localhost:3000/books
-POST http://localhost:3000/members
-POST http://localhost:3000/borrows
-POST http://localhost:3000/borrows/:borrowId/return
-GET http://localhost:3000/fines/borrow/:borrowId
-POST http://localhost:3000/fines/:fineId/payments
-```
-
-Auth service check commands:
+Start each service in a separate terminal:
 
 ```bash
 npm run start:auth-service
-```
-
-Then check:
-
-```bash
-GET http://localhost:3001/auth/health
-POST http://localhost:3001/auth/register
-POST http://localhost:3001/auth/login
-GET http://localhost:3001/auth/profile
-POST http://localhost:3001/auth/validate
-GET http://localhost:3001/docs
-GET http://localhost:3001/docs-json
-```
-
-Member service check commands:
-
-```bash
 npm run start:member-service
-```
-
-Then check:
-
-```bash
-GET http://localhost:3002/members/health
-POST http://localhost:3002/members
-GET http://localhost:3002/members
-GET http://localhost:3002/members/:memberId/eligibility
-GET http://localhost:3002/docs
-GET http://localhost:3002/docs-json
-```
-
-Category service check commands:
-
-```bash
 npm run start:category-service
-```
-
-Then check:
-
-```bash
-GET http://localhost:3004/categories/health
-POST http://localhost:3004/categories
-GET http://localhost:3004/categories
-GET http://localhost:3004/categories/:categoryId/existence
-GET http://localhost:3004/docs
-GET http://localhost:3004/docs-json
-```
-
-Book service check commands:
-
-```bash
 npm run start:book-service
-```
-
-Then check:
-
-```bash
-GET http://localhost:3003/books/health
-POST http://localhost:3003/books
-GET http://localhost:3003/books
-GET http://localhost:3003/books/:bookId/availability
-POST http://localhost:3003/books/:bookId/inventory/decrement
-POST http://localhost:3003/books/:bookId/inventory/increment
-GET http://localhost:3003/docs
-GET http://localhost:3003/docs-json
-```
-
-Borrow service check commands:
-
-```bash
 npm run start:borrow-service
-```
-
-Then check:
-
-```bash
-GET http://localhost:3005/borrows/health
-POST http://localhost:3005/borrows
-GET http://localhost:3005/borrows
-POST http://localhost:3005/borrows/:borrowId/return
-GET http://localhost:3005/borrows/:borrowId/overdue-status
-GET http://localhost:3005/docs
-GET http://localhost:3005/docs-json
-```
-
-Fine payment service check commands:
-
-```bash
 npm run start:fine-payment-service
+npm run start
 ```
 
-Then check:
+The final `npm run start` command starts the API Gateway.
+
+## Main Entry Point
+
+Once all services are running, use the gateway as the main backend entry point:
+
+- `http://localhost:3000`
+
+## Swagger Documentation
+
+Swagger UI:
+
+- Gateway: `http://localhost:3000/docs`
+- Auth Service: `http://localhost:3001/docs`
+- Member Service: `http://localhost:3002/docs`
+- Book Service: `http://localhost:3003/docs`
+- Category Service: `http://localhost:3004/docs`
+- Borrow Service: `http://localhost:3005/docs`
+- Fine Payment Service: `http://localhost:3006/docs`
+
+OpenAPI JSON:
+
+- Gateway: `http://localhost:3000/docs-json`
+- Auth Service: `http://localhost:3001/docs-json`
+- Member Service: `http://localhost:3002/docs-json`
+- Book Service: `http://localhost:3003/docs-json`
+- Category Service: `http://localhost:3004/docs-json`
+- Borrow Service: `http://localhost:3005/docs-json`
+- Fine Payment Service: `http://localhost:3006/docs-json`
+
+## Key Gateway Routes
+
+Public routes:
+
+- `GET /health`
+- `POST /auth/register`
+- `POST /auth/login`
+
+Protected route groups:
+
+- `/auth/profile`
+- `/members`
+- `/categories`
+- `/books`
+- `/borrows`
+- `/fines`
+
+## Example End-to-End Flow
+
+Typical librarian workflow through the gateway:
+
+1. Register or log in through `/auth/register` or `/auth/login`
+2. Create a category through `/categories`
+3. Create a book through `/books`
+4. Create a member through `/members`
+5. Create a borrow through `/borrows`
+6. Return the borrow through `/borrows/:borrowId/return`
+7. Check the generated fine through `/fines/borrow/:borrowId`
+8. Record payment through `/fines/:fineId/payments`
+
+## Testing
+
+Run the main checks:
 
 ```bash
-GET http://localhost:3006/fines/health
-POST http://localhost:3006/fines
-GET http://localhost:3006/fines
-POST http://localhost:3006/fines/:fineId/payments
-GET http://localhost:3006/fines/borrow/:borrowId
-GET http://localhost:3006/fines/member/:memberId
-GET http://localhost:3006/docs
-GET http://localhost:3006/docs-json
+npm run lint
+npm run test -- --runInBand
+npm run test:e2e
+npm run build
 ```
 
-Prisma validation commands:
+Other useful commands:
 
 ```bash
 npm run prisma:validate:auth-service
@@ -219,10 +239,38 @@ npm run build:borrow-service
 npm run build:fine-payment-service
 ```
 
-Implementation must follow the phased delivery rules in `docs/agents/AGENT_GUIDE.md`.
+## Observability
 
-Observability notes:
+Current observability support includes:
 
-- gateway request logs include correlation ID, actor context when available, and the downstream route group
-- book-service and borrow-service downstream HTTP clients propagate `x-correlation-id`
-- downstream service-call logs include operation name, target service, duration, and failure status where applicable
+- gateway request logs with correlation ID
+- actor context in gateway logs when authenticated
+- downstream route-group context in gateway logs
+- correlation ID propagation in downstream HTTP calls from book-service and borrow-service
+- structured downstream service-call logs for validation, inventory, and fine operations
+
+## Changelogs
+
+Service and gateway changelogs are in `docs/changelogs/`.
+
+- [docs/changelogs/API_GATEWAY_CHANGELOG.md](./docs/changelogs/API_GATEWAY_CHANGELOG.md)
+- [docs/changelogs/AUTH_SERVICE_CHANGELOG.md](./docs/changelogs/AUTH_SERVICE_CHANGELOG.md)
+- [docs/changelogs/MEMBER_SERVICE_CHANGELOG.md](./docs/changelogs/MEMBER_SERVICE_CHANGELOG.md)
+- [docs/changelogs/CATEGORY_SERVICE_CHANGELOG.md](./docs/changelogs/CATEGORY_SERVICE_CHANGELOG.md)
+- [docs/changelogs/BOOK_SERVICE_CHANGELOG.md](./docs/changelogs/BOOK_SERVICE_CHANGELOG.md)
+- [docs/changelogs/BORROW_SERVICE_CHANGELOG.md](./docs/changelogs/BORROW_SERVICE_CHANGELOG.md)
+- [docs/changelogs/FINE_PAYMENT_SERVICE_CHANGELOG.md](./docs/changelogs/FINE_PAYMENT_SERVICE_CHANGELOG.md)
+
+## Current Status
+
+The repository is in release-candidate shape:
+
+- all planned implementation phases are complete
+- the backend is runnable end-to-end through the API Gateway
+- the critical business flow is covered by gateway-based e2e tests
+- service and gateway Swagger docs are available
+
+## Notes
+
+- In this sandboxed environment, `npm run build` completes successfully and may then print `Error: spawn EPERM`. The compile step itself still succeeds.
+- The gateway is the intended public entry point for normal usage.
