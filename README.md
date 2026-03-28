@@ -13,6 +13,7 @@ Current implementation status:
 - the Category Service is now runnable for category CRUD, existence checks, and health checks
 - the Book Service is now runnable for catalog CRUD, availability checks, and inventory updates
 - the Borrow Service is now runnable for borrow creation, returns, overdue checks, and downstream orchestration
+- the Fine Payment Service is now runnable for fine creation, payment recording, and fine lookups
 
 Service apps:
 
@@ -150,6 +151,23 @@ POST http://localhost:3005/borrows
 GET http://localhost:3005/borrows
 POST http://localhost:3005/borrows/:borrowId/return
 GET http://localhost:3005/borrows/:borrowId/overdue-status
+```
+
+Fine payment service check commands:
+
+```bash
+npm run start:fine-payment-service
+```
+
+Then check:
+
+```bash
+GET http://localhost:3006/fines/health
+POST http://localhost:3006/fines
+GET http://localhost:3006/fines
+POST http://localhost:3006/fines/:fineId/payments
+GET http://localhost:3006/fines/borrow/:borrowId
+GET http://localhost:3006/fines/member/:memberId
 ```
 
 Prisma validation commands:

@@ -7,3 +7,53 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum FineStatus {
+  PENDING
+  PAID
+  WAIVED
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  ONLINE
+}
+
+model Fine {
+  id        String        @id @default(uuid()) @db.Uuid
+  memberId  String        @db.Uuid
+  borrowId  String        @db.Uuid
+  amount    Decimal       @db.Decimal(10, 2)
+  reason    String        @db.VarChar(50)
+  status    FineStatus
+  issuedDate DateTime     @db.Date
+  paidDate  DateTime?     @db.Date
+  waivedDate DateTime?    @db.Date
+  notes     String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  payments  FinePayment[]
+
+  @@index([memberId])
+  @@unique([borrowId])
+  @@index([status])
+  @@map("fines")
+}
+
+model FinePayment {
+  id                   String        @id @default(uuid()) @db.Uuid
+  fineId               String        @db.Uuid
+  amount               Decimal       @db.Decimal(10, 2)
+  paymentMethod        PaymentMethod
+  paymentDate          DateTime      @db.Date
+  transactionReference String?       @db.VarChar(100)
+  recordedByUserId     String?       @db.Uuid
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  fine                 Fine          @relation(fields: [fineId], references: [id])
+
+  @@index([fineId])
+  @@index([paymentMethod])
+  @@map("fine_payments")
+}
