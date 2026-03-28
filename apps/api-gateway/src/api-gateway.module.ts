@@ -13,7 +13,13 @@ import { RouteAccessPolicyService } from './routing/route-access-policy.service'
 import { ApiGatewayService } from './services/api-gateway.service';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true, load: [gatewayConfig] })],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [gatewayConfig],
+      envFilePath: ['.env', '.env.example'],
+    }),
+  ],
   controllers: [HealthController, GatewayProxyController],
   providers: [
     ApiGatewayService,

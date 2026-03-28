@@ -36,6 +36,15 @@
 - Impact: The gateway now exposes a usable OpenAPI entry point that can be checked locally during development and demos.
 - Notes: No API contract deviation.
 
+## 2026-03-28T15:05:00+05:30
+
+- Scope: api-gateway
+- Type: feat
+- Summary: Implemented full gateway route forwarding with JWT verification, trusted user-header propagation, and upstream failure translation for all service route groups.
+- Files: apps/api-gateway/src/api-gateway.module.ts, apps/api-gateway/src/config/service-registry.service.ts, apps/api-gateway/src/platform/auth/gateway-auth.service.ts, apps/api-gateway/src/routing/gateway-proxy.controller.ts, apps/api-gateway/src/routing/gateway-proxy.service.ts, apps/api-gateway/src/config/service-registry.service.spec.ts, apps/api-gateway/test/app.e2e-spec.ts, README.md
+- Impact: The gateway is now a real public entry point that can forward requests to all downstream services while enforcing auth and preserving request context.
+- Notes: Downstream 4xx/5xx JSON responses are forwarded through as returned by the service, while unreachable or timed-out upstreams are translated by the gateway.
+
 ## 2026-03-28T18:25:00+05:30
 
 - Scope: api-gateway

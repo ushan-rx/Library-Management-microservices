@@ -1,5 +1,5 @@
-import { Test } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
+import { Test } from '@nestjs/testing';
 import { gatewayConfig } from './gateway.config';
 import { ServiceRegistryService } from './service-registry.service';
 
@@ -44,13 +44,16 @@ describe('ServiceRegistryService', () => {
     );
   });
 
-  it('resolves downstream targets by request path prefix', () => {
-    expect(serviceRegistry.resolveTarget('/auth/login')?.baseUrl).toBe(
-      'http://localhost:3001',
+  it('resolves downstream targets from request paths', () => {
+    expect(serviceRegistry.resolveTarget('/auth/login')?.baseUrl).toContain(
+      '3001',
     );
-    expect(serviceRegistry.resolveTarget('/books/123')?.baseUrl).toBe(
-      'http://localhost:3003',
+    expect(serviceRegistry.resolveTarget('/members/123')?.baseUrl).toContain(
+      '3002',
     );
-    expect(serviceRegistry.resolveTarget('/unknown')).toBeNull();
+    expect(serviceRegistry.resolveTarget('/books/123')?.baseUrl).toContain(
+      '3003',
+    );
+    expect(serviceRegistry.resolveTarget('/missing')).toBeNull();
   });
 });

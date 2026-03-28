@@ -1,5 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import { Server } from 'http';
 import request from 'supertest';
 import { ApiGatewayModule } from './../src/api-gateway.module';

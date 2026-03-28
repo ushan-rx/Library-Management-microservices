@@ -88,7 +88,6 @@ export class GatewayProxyService {
     if (request.authenticatedUser) {
       headers.set('x-user-id', request.authenticatedUser.id);
       headers.set('x-user-role', request.authenticatedUser.role);
-
       if (request.authenticatedUser.username) {
         headers.set('x-username', request.authenticatedUser.username);
       }
