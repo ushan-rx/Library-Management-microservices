@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import type { StringValue } from 'ms';
 import { resolveConfigValue } from '../../shared/config/runtime-config.util';
 import { MetricsInterceptor } from '../../shared/observability/metrics.interceptor';
 import { MetricsService } from '../../shared/observability/metrics.service';
@@ -31,7 +32,11 @@ import { PrismaAuthUserRepository } from './users/prisma-auth-user.repository';
           ) ?? 'change-me-in-local-env',
         signOptions: {
           expiresIn:
-            resolveConfigValue(configService, 'JWT_EXPIRES_IN', '1h') ?? '1h',
+            (resolveConfigValue(
+              configService,
+              'JWT_EXPIRES_IN',
+              '1h',
+            ) as StringValue) ?? '1h',
         },
       }),
     }),
