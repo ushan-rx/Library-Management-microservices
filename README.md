@@ -87,7 +87,7 @@ GET http://localhost:3001/auth/profile
 POST http://localhost:3001/auth/validate
 ```
 
-Member service check commands:
+Member service check commands::
 
 ```bash
 npm run start:member-service
@@ -128,7 +128,7 @@ npm run prisma:validate:borrow-service
 npm run prisma:validate:fine-payment-service
 ```
 
-Per-service build commands:
+Per-service build commands;
 
 ```bash
 npm run build:api-gateway
