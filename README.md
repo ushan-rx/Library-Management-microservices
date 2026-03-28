@@ -10,6 +10,7 @@ Current implementation status:
 - the API Gateway is now runnable for health and base middleware/error checks
 - the Auth Service is now runnable for register, login, token validation, profile, and health checks
 - the Member Service is now runnable for member CRUD, eligibility checks, and health checks
+- the Category Service is now runnable for category CRUD, existence checks, and health checks
 
 Service apps:
 
@@ -99,6 +100,21 @@ GET http://localhost:3002/members/health
 POST http://localhost:3002/members
 GET http://localhost:3002/members
 GET http://localhost:3002/members/:memberId/eligibility
+```
+
+Category service check commands:
+
+```bash
+npm run start:category-service
+```
+
+Then check:
+
+```bash
+GET http://localhost:3004/categories/health
+POST http://localhost:3004/categories
+GET http://localhost:3004/categories
+GET http://localhost:3004/categories/:categoryId/existence
 ```
 
 Prisma validation commands:
