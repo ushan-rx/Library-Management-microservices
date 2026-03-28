@@ -22,6 +22,7 @@ export class GatewayProxyService {
     if (!target) {
       throw new NotFoundException('Route not found');
     }
+    request.downstreamService = target.basePath;
 
     const abortController = new AbortController();
     const timeout = setTimeout(

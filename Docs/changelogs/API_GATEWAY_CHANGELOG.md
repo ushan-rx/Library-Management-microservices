@@ -44,3 +44,12 @@
 - Files: apps/api-gateway/src/api-gateway.module.ts, apps/api-gateway/src/config/service-registry.service.ts, apps/api-gateway/src/config/service-registry.service.spec.ts, apps/api-gateway/src/platform/auth/gateway-auth.service.ts, apps/api-gateway/src/platform/auth/gateway-jwt-payload.interface.ts, apps/api-gateway/src/platform/request-context/request-context.types.ts, apps/api-gateway/src/routing/gateway-proxy.controller.ts, apps/api-gateway/src/routing/gateway-proxy.service.ts, apps/api-gateway/test/gateway-business-flows.e2e-spec.ts, README.md
 - Impact: The gateway now acts as the real system entry point for critical business flows, and the full librarian workflow is regression-tested through actual service-to-service interactions.
 - Notes: No API contract deviation.
+
+## 2026-03-28T19:20:00+05:30
+
+- Scope: api-gateway
+- Type: refactor
+- Summary: Improved gateway observability by logging actor context and downstream route targets for both successful and failed requests.
+- Files: apps/api-gateway/src/platform/request-context/request-context.types.ts, apps/api-gateway/src/platform/logging/request-logging.interceptor.ts, apps/api-gateway/src/platform/logging/request-logging.interceptor.spec.ts, apps/api-gateway/src/routing/gateway-proxy.service.ts, README.md
+- Impact: Gateway logs are more useful during debugging because they now show who made the request and which downstream service group handled it.
+- Notes: No API contract deviation.

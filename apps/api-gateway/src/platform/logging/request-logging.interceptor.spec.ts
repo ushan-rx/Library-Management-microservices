@@ -19,7 +19,13 @@ describe('RequestLoggingInterceptor', () => {
   });
 
   it('logs successful requests with the correlation id', (done) => {
-    const context = createExecutionContext();
+    const context = createExecutionContext({
+      authenticatedUser: {
+        id: 'user-123',
+        role: 'LIBRARIAN',
+      },
+      downstreamService: '/books',
+    });
 
     interceptor
       .intercept(context, {
@@ -30,6 +36,8 @@ describe('RequestLoggingInterceptor', () => {
           const [payload] = logSpy.mock.calls[0] as [string];
           expect(logSpy).toHaveBeenCalled();
           expect(payload).toContain('"correlationId":"corr-123"');
+          expect(payload).toContain('"actorId":"user-123"');
+          expect(payload).toContain('"downstreamService":"/books"');
           done();
         },
       });
@@ -53,13 +61,16 @@ describe('RequestLoggingInterceptor', () => {
   });
 });
 
-function createExecutionContext(): ExecutionContext {
+function createExecutionContext(
+  overrides: Record<string, unknown> = {},
+): ExecutionContext {
   const request = {
     method: 'GET',
     url: '/health',
     originalUrl: '/health',
     correlationId: 'corr-123',
     requestStartedAt: Date.now() - 10,
+    ...overrides,
   };
 
   const response = {

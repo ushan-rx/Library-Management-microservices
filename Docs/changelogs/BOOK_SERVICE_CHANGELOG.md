@@ -34,3 +34,11 @@
 - Files: apps/shared/configure-swagger.ts, apps/book-service/src/bootstrap.ts, apps/book-service/src/books/book.controller.ts, apps/book-service/src/books/dto/create-book.dto.ts, apps/book-service/src/books/dto/list-books.query.dto.ts, apps/book-service/src/books/dto/update-book.dto.ts, apps/book-service/src/books/dto/inventory-adjust.dto.ts, apps/book-service/test/app.e2e-spec.ts, README.md, package.json, package-lock.json
 - Impact: Book Service now exposes a usable OpenAPI surface for catalog, availability, and inventory workflows.
 - Notes: No API contract deviation.
+## 2026-03-28T19:20:00+05:30
+
+- Scope: book-service
+- Type: refactor
+- Summary: Added structured downstream logging and correlation ID propagation for category validation requests.
+- Files: apps/book-service/src/integrations/category.client.ts, apps/book-service/src/integrations/downstream-request.util.ts, README.md
+- Impact: Category validation failures and timings are now easier to trace from book-service logs without changing request or response contracts.
+- Notes: No API contract deviation.

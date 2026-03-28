@@ -16,6 +16,7 @@ Current implementation status:
 - the Fine Payment Service is now runnable for fine creation, payment recording, and fine lookups
 - Swagger documentation is now exposed for the gateway and each service at `/docs` and `/docs-json`
 - the full backend flow is now verified through the gateway for register/login, category creation, book creation, member creation, borrow, return, and fine payment
+- downstream service calls now propagate correlation IDs and emit structured logs for request start, completion, and failure paths
 
 Service apps:
 
@@ -219,3 +220,9 @@ npm run build:fine-payment-service
 ```
 
 Implementation must follow the phased delivery rules in `docs/agents/AGENT_GUIDE.md`.
+
+Observability notes:
+
+- gateway request logs include correlation ID, actor context when available, and the downstream route group
+- book-service and borrow-service downstream HTTP clients propagate `x-correlation-id`
+- downstream service-call logs include operation name, target service, duration, and failure status where applicable

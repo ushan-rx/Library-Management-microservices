@@ -5,6 +5,10 @@ import {
   bookNotFound,
   borrowServiceUnavailable,
 } from '../common/borrow-response.helpers';
+import {
+  createDownstreamHeaders,
+  createDownstreamRequestContext,
+} from './downstream-request.util';
 
 interface BookAvailabilityResponse {
   success: boolean;
@@ -25,10 +29,39 @@ export class BookClient {
   constructor(private readonly configService: ConfigService) {}
 
   async validateAvailability(bookId: string): Promise<void> {
+    const requestContext = createDownstreamRequestContext();
+
+    this.logger.log(
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        level: 'log',
+        service: process.env.BORROW_SERVICE_NAME ?? 'borrow-service',
+        operation: 'validate-book-availability',
+        downstreamService: 'book-service',
+        bookId,
+        correlationId: requestContext.correlationId,
+      }),
+    );
+
     const response = await fetch(
       `${this.baseUrl()}/books/${bookId}/availability`,
+      {
+        headers: createDownstreamHeaders(requestContext.correlationId),
+      },
     ).catch((error: unknown) => {
-      this.logger.error(`Book validation request failed: ${String(error)}`);
+      this.logger.error(
+        JSON.stringify({
+          timestamp: new Date().toISOString(),
+          level: 'error',
+          service: process.env.BORROW_SERVICE_NAME ?? 'borrow-service',
+          operation: 'validate-book-availability',
+          downstreamService: 'book-service',
+          bookId,
+          correlationId: requestContext.correlationId,
+          durationMs: Date.now() - requestContext.startedAt,
+          error: String(error),
+        }),
+      );
       throw borrowServiceUnavailable(
         'Book service is unavailable',
         'BOOK_SERVICE_UNAVAILABLE',
@@ -36,6 +69,19 @@ export class BookClient {
     });
 
     if (!response.ok) {
+      this.logger.error(
+        JSON.stringify({
+          timestamp: new Date().toISOString(),
+          level: 'error',
+          service: process.env.BORROW_SERVICE_NAME ?? 'borrow-service',
+          operation: 'validate-book-availability',
+          downstreamService: 'book-service',
+          bookId,
+          correlationId: requestContext.correlationId,
+          durationMs: Date.now() - requestContext.startedAt,
+          statusCode: response.status,
+        }),
+      );
       throw borrowServiceUnavailable(
         'Book service returned an unexpected response',
         'BOOK_SERVICE_UNAVAILABLE',
@@ -50,6 +96,20 @@ export class BookClient {
     if (!body.data.available) {
       throw borrowConflict('Book is not available', 'BOOK_NOT_AVAILABLE');
     }
+
+    this.logger.log(
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        level: 'log',
+        service: process.env.BORROW_SERVICE_NAME ?? 'borrow-service',
+        operation: 'validate-book-availability',
+        downstreamService: 'book-service',
+        bookId,
+        correlationId: requestContext.correlationId,
+        durationMs: Date.now() - requestContext.startedAt,
+        statusCode: response.status,
+      }),
+    );
   }
 
   async decrementInventory(bookId: string, referenceId: string): Promise<void> {
@@ -65,14 +125,16 @@ export class BookClient {
     reason: string,
     referenceId: string,
   ): Promise<void> {
+    const requestContext = createDownstreamRequestContext();
+
     const response = await fetch(
       `${this.baseUrl()}/books/${bookId}/inventory/${reason === 'BORROW_CREATED' ? 'decrement' : 'increment'}`,
       {
         method: 'POST',
-        headers: {
+        headers: createDownstreamHeaders(requestContext.correlationId, {
           'content-type': 'application/json',
           'x-user-role': 'LIBRARIAN',
-        },
+        }),
         body: JSON.stringify({
           reason,
           quantity: 1,
@@ -80,7 +142,23 @@ export class BookClient {
         }),
       },
     ).catch((error: unknown) => {
-      this.logger.error(`Book inventory request failed: ${String(error)}`);
+      this.logger.error(
+        JSON.stringify({
+          timestamp: new Date().toISOString(),
+          level: 'error',
+          service: process.env.BORROW_SERVICE_NAME ?? 'borrow-service',
+          operation:
+            reason === 'BORROW_CREATED'
+              ? 'decrement-book-inventory'
+              : 'increment-book-inventory',
+          downstreamService: 'book-service',
+          bookId,
+          referenceId,
+          correlationId: requestContext.correlationId,
+          durationMs: Date.now() - requestContext.startedAt,
+          error: String(error),
+        }),
+      );
       throw borrowServiceUnavailable(
         'Book service is unavailable',
         'BOOK_SERVICE_UNAVAILABLE',
@@ -88,6 +166,23 @@ export class BookClient {
     });
 
     if (!response.ok) {
+      this.logger.error(
+        JSON.stringify({
+          timestamp: new Date().toISOString(),
+          level: 'error',
+          service: process.env.BORROW_SERVICE_NAME ?? 'borrow-service',
+          operation:
+            reason === 'BORROW_CREATED'
+              ? 'decrement-book-inventory'
+              : 'increment-book-inventory',
+          downstreamService: 'book-service',
+          bookId,
+          referenceId,
+          correlationId: requestContext.correlationId,
+          durationMs: Date.now() - requestContext.startedAt,
+          statusCode: response.status,
+        }),
+      );
       if (response.status === 404) {
         throw bookNotFound('Book not found');
       }
@@ -109,6 +204,24 @@ export class BookClient {
         'BOOK_SERVICE_UNAVAILABLE',
       );
     }
+
+    this.logger.log(
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        level: 'log',
+        service: process.env.BORROW_SERVICE_NAME ?? 'borrow-service',
+        operation:
+          reason === 'BORROW_CREATED'
+            ? 'decrement-book-inventory'
+            : 'increment-book-inventory',
+        downstreamService: 'book-service',
+        bookId,
+        referenceId,
+        correlationId: requestContext.correlationId,
+        durationMs: Date.now() - requestContext.startedAt,
+        statusCode: response.status,
+      }),
+    );
   }
 
   private baseUrl() {

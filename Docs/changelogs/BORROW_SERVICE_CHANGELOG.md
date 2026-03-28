@@ -34,3 +34,11 @@
 - Files: apps/shared/configure-swagger.ts, apps/borrow-service/src/bootstrap.ts, apps/borrow-service/src/borrows/borrow.controller.ts, apps/borrow-service/src/borrows/dto/create-borrow.dto.ts, apps/borrow-service/src/borrows/dto/list-borrows.query.dto.ts, apps/borrow-service/src/borrows/dto/return-book.dto.ts, apps/borrow-service/src/borrows/dto/update-borrow.dto.ts, apps/borrow-service/test/app.e2e-spec.ts, README.md, package.json, package-lock.json
 - Impact: Borrow Service now exposes a usable OpenAPI surface for borrow creation, return, and overdue workflows.
 - Notes: No API contract deviation.
+## 2026-03-28T19:20:00+05:30
+
+- Scope: borrow-service
+- Type: refactor
+- Summary: Added structured downstream logging and correlation ID propagation for member, book, and fine service calls.
+- Files: apps/borrow-service/src/integrations/member.client.ts, apps/borrow-service/src/integrations/book.client.ts, apps/borrow-service/src/integrations/fine.client.ts, apps/borrow-service/src/integrations/downstream-request.util.ts, README.md
+- Impact: Borrow orchestration now produces traceable downstream call logs with durations, target services, and correlation IDs for both success and failure paths.
+- Notes: No API contract deviation.
