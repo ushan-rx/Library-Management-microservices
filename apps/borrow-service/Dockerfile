@@ -5,7 +5,12 @@ WORKDIR /app
 RUN apk add --no-cache openssl
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm config set fetch-retries 5 \
+ && npm config set fetch-retry-mintimeout 20000 \
+ && npm config set fetch-retry-maxtimeout 120000 \
+ && npm config set fetch-timeout 300000 \
+ && npm config set registry https://registry.npmjs.org/ \
+ && npm ci --no-audit --prefer-offline
 
 COPY . .
 
@@ -21,7 +26,12 @@ ENV NODE_ENV=production
 RUN apk add --no-cache openssl
 
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm config set fetch-retries 5 \
+ && npm config set fetch-retry-mintimeout 20000 \
+ && npm config set fetch-retry-maxtimeout 120000 \
+ && npm config set fetch-timeout 300000 \
+ && npm config set registry https://registry.npmjs.org/ \
+ && npm ci --omit=dev --no-audit --prefer-offline
 
 COPY --from=builder /app/apps ./apps
 COPY --from=builder /app/dist ./dist

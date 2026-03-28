@@ -3,6 +3,11 @@
 node_modules
 dist
 coverage
+docs
+test
+docker/postgres
+PROJECT_STRUCTURE.md
+README.md
 .env
 .env.local
 .env.development.local
