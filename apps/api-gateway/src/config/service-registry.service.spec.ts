@@ -43,4 +43,14 @@ describe('ServiceRegistryService', () => {
       ]),
     );
   });
+
+  it('resolves downstream targets from request paths', () => {
+    expect(serviceRegistry.resolveTarget('/auth/login')?.baseUrl).toContain(
+      '3001',
+    );
+    expect(serviceRegistry.resolveTarget('/members/123')?.baseUrl).toContain(
+      '3002',
+    );
+    expect(serviceRegistry.resolveTarget('/missing')).toBeNull();
+  });
 });

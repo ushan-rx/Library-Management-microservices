@@ -8,6 +8,7 @@ Current implementation status:
 - Phase 1 shared Docker and Prisma foundation completed
 - Phase 2 API Gateway skeleton completed
 - the API Gateway is now runnable for health and base middleware/error checks
+- the API Gateway now forwards requests across all service route groups with gateway-level JWT enforcement
 - the Auth Service is now runnable for register, login, token validation, profile, and health checks
 - the Member Service is now runnable for member CRUD, eligibility checks, and health checks
 - the Category Service is now runnable for category CRUD, existence checks, and health checks
@@ -71,7 +72,11 @@ Then check:
 
 ```bash
 GET http://localhost:3000/health
-GET http://localhost:3000/missing
+POST http://localhost:3000/auth/login
+GET http://localhost:3000/members
+GET http://localhost:3000/books
+GET http://localhost:3000/borrows
+GET http://localhost:3000/fines
 ```
 
 Auth service check commands:
