@@ -9,7 +9,7 @@ Current implementation status:
 - Phase 2 API Gateway skeleton completed
 - the API Gateway is now runnable for health and base middleware/error checks
 - the Auth Service is now runnable for register, login, token validation, profile, and health checks
-- business service logic has not started yet
+- the Member Service is now runnable for member CRUD, eligibility checks, and health checks
 
 Service apps:
 
@@ -84,6 +84,21 @@ POST http://localhost:3001/auth/register
 POST http://localhost:3001/auth/login
 GET http://localhost:3001/auth/profile
 POST http://localhost:3001/auth/validate
+```
+
+Member service check commands:
+
+```bash
+npm run start:member-service
+```
+
+Then check:
+
+```bash
+GET http://localhost:3002/members/health
+POST http://localhost:3002/members
+GET http://localhost:3002/members
+GET http://localhost:3002/members/:memberId/eligibility
 ```
 
 Prisma validation commands:

@@ -7,3 +7,25 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum MemberStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+model Member {
+  id               String       @id @default(uuid()) @db.Uuid
+  fullName         String       @db.VarChar(150)
+  email            String?      @unique @db.VarChar(255)
+  phone            String?      @db.VarChar(30)
+  address          String?
+  membershipStatus MemberStatus
+  notes            String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  deletedAt        DateTime?
+
+  @@index([membershipStatus])
+  @@map("members")
+}

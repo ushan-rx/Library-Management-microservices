@@ -17,6 +17,7 @@
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start api-gateway",
     "start:auth-service": "nest start auth-service",
+    "start:member-service": "nest start member-service",
     "start:dev": "nest start api-gateway --watch",
     "start:debug": "nest start api-gateway --debug --watch",
     "start:prod": "node dist/apps/api-gateway/main",
