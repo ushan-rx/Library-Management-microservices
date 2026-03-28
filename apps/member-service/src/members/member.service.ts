@@ -8,7 +8,8 @@ import { ListMembersQueryDto } from './dto/list-members.query.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { MemberStatus } from './enums/member-status.enum';
 import { Member } from './interfaces/member.interface';
-import { MEMBER_REPOSITORY, MemberRepository } from './member.repository';
+import { MEMBER_REPOSITORY } from './member.repository';
+import type { MemberRepository } from './member.repository';
 
 @Injectable()
 export class MemberService {

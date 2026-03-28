@@ -8,8 +8,9 @@ import { CreateFineDto } from './dto/create-fine.dto';
 import { ListFinesQueryDto } from './dto/list-fines.query.dto';
 import { RecordFinePaymentDto } from './dto/record-fine-payment.dto';
 import { FineStatus } from './enums/fine-status.enum';
-import { FINE_REPOSITORY, FineRepository } from './fine.repository';
+import { FINE_REPOSITORY } from './fine.repository';
 import { Fine } from './interfaces/fine.interface';
+import type { FineRepository } from './fine.repository';
 
 @Injectable()
 export class FineService {
