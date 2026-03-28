@@ -11,6 +11,7 @@ Current implementation status:
 - the Auth Service is now runnable for register, login, token validation, profile, and health checks
 - the Member Service is now runnable for member CRUD, eligibility checks, and health checks
 - the Category Service is now runnable for category CRUD, existence checks, and health checks
+- the Book Service is now runnable for catalog CRUD, availability checks, and inventory updates
 
 Service apps:
 
@@ -115,6 +116,23 @@ GET http://localhost:3004/categories/health
 POST http://localhost:3004/categories
 GET http://localhost:3004/categories
 GET http://localhost:3004/categories/:categoryId/existence
+```
+
+Book service check commands:
+
+```bash
+npm run start:book-service
+```
+
+Then check:
+
+```bash
+GET http://localhost:3003/books/health
+POST http://localhost:3003/books
+GET http://localhost:3003/books
+GET http://localhost:3003/books/:bookId/availability
+POST http://localhost:3003/books/:bookId/inventory/decrement
+POST http://localhost:3003/books/:bookId/inventory/increment
 ```
 
 Prisma validation commands:
