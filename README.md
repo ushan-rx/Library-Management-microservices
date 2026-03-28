@@ -15,6 +15,7 @@ Current implementation status:
 - the Borrow Service is now runnable for borrow creation, returns, overdue checks, and downstream orchestration
 - the Fine Payment Service is now runnable for fine creation, payment recording, and fine lookups
 - Swagger documentation is now exposed for the gateway and each service at `/docs` and `/docs-json`
+- the full backend flow is now verified through the gateway for register/login, category creation, book creation, member creation, borrow, return, and fine payment
 
 Service apps:
 
@@ -75,6 +76,15 @@ GET http://localhost:3000/health
 GET http://localhost:3000/missing
 GET http://localhost:3000/docs
 GET http://localhost:3000/docs-json
+POST http://localhost:3000/auth/register
+POST http://localhost:3000/auth/login
+POST http://localhost:3000/categories
+POST http://localhost:3000/books
+POST http://localhost:3000/members
+POST http://localhost:3000/borrows
+POST http://localhost:3000/borrows/:borrowId/return
+GET http://localhost:3000/fines/borrow/:borrowId
+POST http://localhost:3000/fines/:fineId/payments
 ```
 
 Auth service check commands:

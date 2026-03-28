@@ -87,6 +87,18 @@ export class ServiceRegistryService {
     ];
   }
 
+  resolveTarget(path: string): DownstreamServiceTarget | null {
+    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+
+    return (
+      Object.values(this.getTargets()).find(
+        (target) =>
+          normalizedPath === target.basePath ||
+          normalizedPath.startsWith(`${target.basePath}/`),
+      ) ?? null
+    );
+  }
+
   private getRequired(key: string, fallback: string): string {
     return this.configService.get<string>(key) ?? fallback;
   }

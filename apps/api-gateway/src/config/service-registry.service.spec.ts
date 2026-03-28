@@ -43,4 +43,14 @@ describe('ServiceRegistryService', () => {
       ]),
     );
   });
+
+  it('resolves downstream targets by request path prefix', () => {
+    expect(serviceRegistry.resolveTarget('/auth/login')?.baseUrl).toBe(
+      'http://localhost:3001',
+    );
+    expect(serviceRegistry.resolveTarget('/books/123')?.baseUrl).toBe(
+      'http://localhost:3003',
+    );
+    expect(serviceRegistry.resolveTarget('/unknown')).toBeNull();
+  });
 });

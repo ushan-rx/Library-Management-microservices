@@ -35,3 +35,12 @@
 - Files: apps/shared/configure-swagger.ts, apps/api-gateway/src/bootstrap.ts, apps/api-gateway/src/health/health.controller.ts, apps/api-gateway/test/app.e2e-spec.ts, README.md, package.json, package-lock.json
 - Impact: The gateway now exposes a usable OpenAPI entry point that can be checked locally during development and demos.
 - Notes: No API contract deviation.
+
+## 2026-03-28T18:25:00+05:30
+
+- Scope: api-gateway
+- Type: feature
+- Summary: Implemented downstream route forwarding and gateway-based end-to-end business flow coverage across auth, categories, books, members, borrows, and fines.
+- Files: apps/api-gateway/src/api-gateway.module.ts, apps/api-gateway/src/config/service-registry.service.ts, apps/api-gateway/src/config/service-registry.service.spec.ts, apps/api-gateway/src/platform/auth/gateway-auth.service.ts, apps/api-gateway/src/platform/auth/gateway-jwt-payload.interface.ts, apps/api-gateway/src/platform/request-context/request-context.types.ts, apps/api-gateway/src/routing/gateway-proxy.controller.ts, apps/api-gateway/src/routing/gateway-proxy.service.ts, apps/api-gateway/test/gateway-business-flows.e2e-spec.ts, README.md
+- Impact: The gateway now acts as the real system entry point for critical business flows, and the full librarian workflow is regression-tested through actual service-to-service interactions.
+- Notes: No API contract deviation.
