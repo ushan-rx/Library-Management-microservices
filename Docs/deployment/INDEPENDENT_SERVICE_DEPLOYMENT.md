@@ -118,3 +118,4 @@ npm run docker:build:fine-payment-service
 
 - Full stack: use `docker compose up --build -d`
 - Single service image: build with the service-specific `npm run docker:build:*` command, then provide the required environment variables at `docker run` time
+- Configuration and secret guidance: see [CONFIGURATION_AND_SECRETS.md](./CONFIGURATION_AND_SECRETS.md)

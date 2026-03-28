@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { resolveConfigValue } from '../../../shared/config/runtime-config.util';
 
 export interface DownstreamServiceTarget {
   basePath: string;
@@ -100,6 +101,6 @@ export class ServiceRegistryService {
   }
 
   private getRequired(key: string, fallback: string): string {
-    return this.configService.get<string>(key) ?? fallback;
+    return resolveConfigValue(this.configService, key, fallback) ?? fallback;
   }
 }

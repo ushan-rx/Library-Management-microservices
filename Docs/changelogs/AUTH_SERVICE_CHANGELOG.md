@@ -53,3 +53,12 @@
 - Files: apps/auth-service/Dockerfile, docker-compose.yml, package.json, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md
 - Impact: Auth Service can now be built and deployed more explicitly as an independent container image.
 - Notes: No API contract deviation.
+
+## 2026-03-28T21:30:00+05:30
+
+- Scope: auth-service
+- Type: chore
+- Summary: Added file-backed runtime configuration support for JWT and database URL inputs and documented the new configuration model.
+- Files: apps/shared/config/runtime-config.util.ts, apps/shared/config/runtime-config.util.spec.ts, apps/auth-service/src/main.ts, apps/auth-service/src/auth-service.module.ts, apps/auth-service/src/prisma/prisma.service.ts, docker-compose.yml, .env.example, .env.compose.example, README.md, docs/deployment/CONFIGURATION_AND_SECRETS.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: Auth Service can now resolve secrets and database configuration from mounted files as well as direct environment variables.
+- Notes: No API contract deviation.

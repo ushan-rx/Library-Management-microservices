@@ -52,3 +52,12 @@
 - Files: apps/member-service/Dockerfile, docker-compose.yml, package.json, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md
 - Impact: Member Service can now be built and deployed with an explicit service-owned container definition.
 - Notes: No API contract deviation.
+
+## 2026-03-28T21:30:00+05:30
+
+- Scope: member-service
+- Type: chore
+- Summary: Added file-backed runtime configuration support for Member Service database URL inputs.
+- Files: apps/shared/config/runtime-config.util.ts, apps/shared/config/runtime-config.util.spec.ts, apps/member-service/src/main.ts, apps/member-service/src/prisma/prisma.service.ts, docker-compose.yml, .env.example, .env.compose.example, docs/deployment/CONFIGURATION_AND_SECRETS.md
+- Impact: Member Service can now resolve its database configuration from mounted files as well as direct environment variables.
+- Notes: No API contract deviation.

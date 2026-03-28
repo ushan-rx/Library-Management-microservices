@@ -89,3 +89,12 @@
 - Files: apps/api-gateway/Dockerfile, docker-compose.yml, package.json, README.md, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
 - Impact: The gateway image is now explicitly owned by its application directory, which makes independent builds and deployment contracts clearer.
 - Notes: No API contract deviation.
+
+## 2026-03-28T21:30:00+05:30
+
+- Scope: api-gateway
+- Type: chore
+- Summary: Added file-backed runtime configuration support for gateway secrets and upstream URLs and documented the new configuration model.
+- Files: apps/shared/config/runtime-config.util.ts, apps/shared/config/runtime-config.util.spec.ts, apps/api-gateway/src/main.ts, apps/api-gateway/src/config/gateway.config.ts, apps/api-gateway/src/config/service-registry.service.ts, apps/api-gateway/src/platform/auth/gateway-auth.service.ts, docker-compose.yml, .env.example, .env.compose.example, README.md, docs/deployment/CONFIGURATION_AND_SECRETS.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: The gateway can now resolve sensitive runtime values from `*_FILE` inputs, which prepares the deployment model for mounted secrets and secret managers.
+- Notes: No API contract deviation.

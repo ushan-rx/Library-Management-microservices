@@ -7,6 +7,7 @@ services:
       POSTGRES_DB: ${POSTGRES_SUPER_DB:-postgres}
       POSTGRES_USER: ${POSTGRES_USER:-library_admin}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-library_password}
+      POSTGRES_PASSWORD_FILE: ${POSTGRES_PASSWORD_FILE:-}
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
@@ -38,9 +39,12 @@ services:
       AUTH_SERVICE_PORT: 3001
       AUTH_STORAGE_DRIVER: prisma
       JWT_SECRET: ${JWT_SECRET:-change-me-in-local-env}
+      JWT_SECRET_FILE: ${JWT_SECRET_FILE:-}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1h}
       DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/auth_db?schema=public
+      DATABASE_URL_FILE: ${AUTH_DATABASE_URL_FILE:-}
       AUTH_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/auth_db?schema=public
+      AUTH_DATABASE_URL_FILE: ${AUTH_DATABASE_URL_FILE:-}
       AUTH_SERVICE_BASE_URL: http://auth-service:3001
     ports:
       - "3001:3001"
@@ -66,7 +70,9 @@ services:
       MEMBER_SERVICE_PORT: 3002
       MEMBER_STORAGE_DRIVER: prisma
       DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/member_db?schema=public
+      DATABASE_URL_FILE: ${MEMBER_DATABASE_URL_FILE:-}
       MEMBER_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/member_db?schema=public
+      MEMBER_DATABASE_URL_FILE: ${MEMBER_DATABASE_URL_FILE:-}
       MEMBER_SERVICE_BASE_URL: http://member-service:3002
     ports:
       - "3002:3002"
@@ -92,7 +98,9 @@ services:
       CATEGORY_SERVICE_PORT: 3004
       CATEGORY_STORAGE_DRIVER: prisma
       DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/category_db?schema=public
+      DATABASE_URL_FILE: ${CATEGORY_DATABASE_URL_FILE:-}
       CATEGORY_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/category_db?schema=public
+      CATEGORY_DATABASE_URL_FILE: ${CATEGORY_DATABASE_URL_FILE:-}
       CATEGORY_SERVICE_BASE_URL: http://category-service:3004
     ports:
       - "3004:3004"
@@ -121,7 +129,9 @@ services:
       BOOK_STORAGE_DRIVER: prisma
       BOOK_VALIDATE_CATEGORY_ON_WRITE: ${BOOK_VALIDATE_CATEGORY_ON_WRITE:-true}
       DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/book_db?schema=public
+      DATABASE_URL_FILE: ${BOOK_DATABASE_URL_FILE:-}
       BOOK_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/book_db?schema=public
+      BOOK_DATABASE_URL_FILE: ${BOOK_DATABASE_URL_FILE:-}
       BOOK_SERVICE_BASE_URL: http://book-service:3003
       CATEGORY_SERVICE_BASE_URL: http://category-service:3004
     ports:
@@ -148,7 +158,9 @@ services:
       FINE_PAYMENT_SERVICE_PORT: 3006
       FINE_STORAGE_DRIVER: prisma
       DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/fine_db?schema=public
+      DATABASE_URL_FILE: ${FINE_DATABASE_URL_FILE:-}
       FINE_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/fine_db?schema=public
+      FINE_DATABASE_URL_FILE: ${FINE_DATABASE_URL_FILE:-}
       FINE_PAYMENT_SERVICE_BASE_URL: http://fine-payment-service:3006
     ports:
       - "3006:3006"
@@ -181,7 +193,9 @@ services:
       BORROW_STORAGE_DRIVER: prisma
       BORROW_FINE_AMOUNT_PER_DAY: ${BORROW_FINE_AMOUNT_PER_DAY:-100}
       DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/borrow_db?schema=public
+      DATABASE_URL_FILE: ${BORROW_DATABASE_URL_FILE:-}
       BORROW_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/borrow_db?schema=public
+      BORROW_DATABASE_URL_FILE: ${BORROW_DATABASE_URL_FILE:-}
       BORROW_SERVICE_BASE_URL: http://borrow-service:3005
       MEMBER_SERVICE_BASE_URL: http://member-service:3002
       BOOK_SERVICE_BASE_URL: http://book-service:3003
@@ -219,6 +233,7 @@ services:
       PORT: 3000
       API_GATEWAY_PORT: 3000
       JWT_SECRET: ${JWT_SECRET:-change-me-in-local-env}
+      JWT_SECRET_FILE: ${JWT_SECRET_FILE:-}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
       AUTH_SERVICE_BASE_URL: http://auth-service:3001
       MEMBER_SERVICE_BASE_URL: http://member-service:3002

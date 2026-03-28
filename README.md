@@ -82,6 +82,7 @@ Important references:
 - [docs/specs/AUTH_ARCHITECTURE.md](./docs/specs/AUTH_ARCHITECTURE.md)
 - [docs/agents/MICROSERVICES_EVOLUTION_PLAN.md](./docs/agents/MICROSERVICES_EVOLUTION_PLAN.md)
 - [docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md](./docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md)
+- [docs/deployment/CONFIGURATION_AND_SECRETS.md](./docs/deployment/CONFIGURATION_AND_SECRETS.md)
 
 ## Prerequisites
 
@@ -96,12 +97,14 @@ Copy values from `.env.example` into your local environment as needed.
 Main environment file:
 
 - [`.env.example`](./.env.example)
+- [`.env.compose.example`](./.env.compose.example)
 
 The project uses:
 
 - one Dockerized PostgreSQL container
 - one logical database per service
 - shared JWT secret between Auth Service and API Gateway
+- optional `*_FILE` runtime variables for file-backed secrets and database URLs
 
 ## Installation
 
@@ -199,6 +202,20 @@ Each application now has its own Dockerfile under `apps/<service>/Dockerfile`.
 Use the per-service image build commands when you want to ship or test a service independently of the full stack. The required runtime variables, ports, and health endpoints are documented in:
 
 - [docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md](./docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md)
+
+## Configuration and Secrets
+
+The runtime now supports both direct environment variables and file-backed `*_FILE` variables for secrets and database URLs.
+
+Examples:
+
+- `JWT_SECRET` or `JWT_SECRET_FILE`
+- `AUTH_DATABASE_URL` or `AUTH_DATABASE_URL_FILE`
+- `BOOK_DATABASE_URL` or `BOOK_DATABASE_URL_FILE`
+
+Details and deployment guidance are documented in:
+
+- [docs/deployment/CONFIGURATION_AND_SECRETS.md](./docs/deployment/CONFIGURATION_AND_SECRETS.md)
 
 ## Main Entry Point
 
