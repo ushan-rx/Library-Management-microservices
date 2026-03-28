@@ -13,6 +13,12 @@ export function configureGatewayApp(app: INestApplication): void {
   configureSwagger(app, {
     title: 'API Gateway',
     description:
-      'Gateway operational endpoints and documentation entry point for the library system.',
+      'Gateway operational endpoints and public API entry point for the library system. Use this for signup, login, protected route access, and service forwarding.',
+    security: {
+      type: 'bearer',
+      schemeName: 'bearer',
+      description:
+        'JWT bearer token used for protected routes forwarded by the API Gateway.',
+    },
   });
 }
