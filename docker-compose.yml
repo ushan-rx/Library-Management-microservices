@@ -26,10 +26,7 @@ services:
   auth-service:
     build:
       context: .
-      dockerfile: docker/node-service.Dockerfile
-      args:
-        APP_NAME: auth-service
-        PRISMA_SCHEMA: apps/auth-service/prisma/schema.prisma
+      dockerfile: apps/auth-service/Dockerfile
     container_name: library-auth-service
     restart: unless-stopped
     depends_on:
@@ -45,12 +42,6 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/auth_db?schema=public
       AUTH_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/auth_db?schema=public
       AUTH_SERVICE_BASE_URL: http://auth-service:3001
-    command:
-      [
-        "sh",
-        "-c",
-        "npx prisma db push --schema apps/auth-service/prisma/schema.prisma --skip-generate && node dist/apps/auth-service/main",
-      ]
     ports:
       - "3001:3001"
     healthcheck:
@@ -63,10 +54,7 @@ services:
   member-service:
     build:
       context: .
-      dockerfile: docker/node-service.Dockerfile
-      args:
-        APP_NAME: member-service
-        PRISMA_SCHEMA: apps/member-service/prisma/schema.prisma
+      dockerfile: apps/member-service/Dockerfile
     container_name: library-member-service
     restart: unless-stopped
     depends_on:
@@ -80,12 +68,6 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/member_db?schema=public
       MEMBER_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/member_db?schema=public
       MEMBER_SERVICE_BASE_URL: http://member-service:3002
-    command:
-      [
-        "sh",
-        "-c",
-        "npx prisma db push --schema apps/member-service/prisma/schema.prisma --skip-generate && node dist/apps/member-service/main",
-      ]
     ports:
       - "3002:3002"
     healthcheck:
@@ -98,10 +80,7 @@ services:
   category-service:
     build:
       context: .
-      dockerfile: docker/node-service.Dockerfile
-      args:
-        APP_NAME: category-service
-        PRISMA_SCHEMA: apps/category-service/prisma/schema.prisma
+      dockerfile: apps/category-service/Dockerfile
     container_name: library-category-service
     restart: unless-stopped
     depends_on:
@@ -115,12 +94,6 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/category_db?schema=public
       CATEGORY_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/category_db?schema=public
       CATEGORY_SERVICE_BASE_URL: http://category-service:3004
-    command:
-      [
-        "sh",
-        "-c",
-        "npx prisma db push --schema apps/category-service/prisma/schema.prisma --skip-generate && node dist/apps/category-service/main",
-      ]
     ports:
       - "3004:3004"
     healthcheck:
@@ -133,10 +106,7 @@ services:
   book-service:
     build:
       context: .
-      dockerfile: docker/node-service.Dockerfile
-      args:
-        APP_NAME: book-service
-        PRISMA_SCHEMA: apps/book-service/prisma/schema.prisma
+      dockerfile: apps/book-service/Dockerfile
     container_name: library-book-service
     restart: unless-stopped
     depends_on:
@@ -154,12 +124,6 @@ services:
       BOOK_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/book_db?schema=public
       BOOK_SERVICE_BASE_URL: http://book-service:3003
       CATEGORY_SERVICE_BASE_URL: http://category-service:3004
-    command:
-      [
-        "sh",
-        "-c",
-        "npx prisma db push --schema apps/book-service/prisma/schema.prisma --skip-generate && node dist/apps/book-service/main",
-      ]
     ports:
       - "3003:3003"
     healthcheck:
@@ -172,10 +136,7 @@ services:
   fine-payment-service:
     build:
       context: .
-      dockerfile: docker/node-service.Dockerfile
-      args:
-        APP_NAME: fine-payment-service
-        PRISMA_SCHEMA: apps/fine-payment-service/prisma/schema.prisma
+      dockerfile: apps/fine-payment-service/Dockerfile
     container_name: library-fine-payment-service
     restart: unless-stopped
     depends_on:
@@ -189,12 +150,6 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/fine_db?schema=public
       FINE_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/fine_db?schema=public
       FINE_PAYMENT_SERVICE_BASE_URL: http://fine-payment-service:3006
-    command:
-      [
-        "sh",
-        "-c",
-        "npx prisma db push --schema apps/fine-payment-service/prisma/schema.prisma --skip-generate && node dist/apps/fine-payment-service/main",
-      ]
     ports:
       - "3006:3006"
     healthcheck:
@@ -207,10 +162,7 @@ services:
   borrow-service:
     build:
       context: .
-      dockerfile: docker/node-service.Dockerfile
-      args:
-        APP_NAME: borrow-service
-        PRISMA_SCHEMA: apps/borrow-service/prisma/schema.prisma
+      dockerfile: apps/borrow-service/Dockerfile
     container_name: library-borrow-service
     restart: unless-stopped
     depends_on:
@@ -234,12 +186,6 @@ services:
       MEMBER_SERVICE_BASE_URL: http://member-service:3002
       BOOK_SERVICE_BASE_URL: http://book-service:3003
       FINE_PAYMENT_SERVICE_BASE_URL: http://fine-payment-service:3006
-    command:
-      [
-        "sh",
-        "-c",
-        "npx prisma db push --schema apps/borrow-service/prisma/schema.prisma --skip-generate && node dist/apps/borrow-service/main",
-      ]
     ports:
       - "3005:3005"
     healthcheck:
@@ -252,10 +198,7 @@ services:
   api-gateway:
     build:
       context: .
-      dockerfile: docker/node-service.Dockerfile
-      args:
-        APP_NAME: api-gateway
-        PRISMA_SCHEMA: ""
+      dockerfile: apps/api-gateway/Dockerfile
     container_name: library-api-gateway
     restart: unless-stopped
     depends_on:

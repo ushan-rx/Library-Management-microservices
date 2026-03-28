@@ -80,3 +80,12 @@
 - Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
 - Impact: The gateway can now participate in a multi-container local runtime instead of depending only on manually started local processes.
 - Notes: No API contract deviation.
+
+## 2026-03-28T21:05:00+05:30
+
+- Scope: api-gateway
+- Type: chore
+- Summary: Switched the deployment model to explicit per-app Dockerfiles and documented independent image build and runtime contracts.
+- Files: apps/api-gateway/Dockerfile, docker-compose.yml, package.json, README.md, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: The gateway image is now explicitly owned by its application directory, which makes independent builds and deployment contracts clearer.
+- Notes: No API contract deviation.

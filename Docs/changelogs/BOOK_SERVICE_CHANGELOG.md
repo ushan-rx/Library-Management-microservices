@@ -51,3 +51,12 @@
 - Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
 - Impact: Book Service can now run as an isolated container with container-network dependencies resolved through service names.
 - Notes: No API contract deviation.
+
+## 2026-03-28T21:05:00+05:30
+
+- Scope: book-service
+- Type: chore
+- Summary: Added an app-owned Dockerfile and independent image build contract for Book Service.
+- Files: apps/book-service/Dockerfile, docker-compose.yml, package.json, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md
+- Impact: Book Service can now be built and deployed with an explicit service-owned container definition.
+- Notes: No API contract deviation.

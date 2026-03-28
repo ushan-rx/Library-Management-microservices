@@ -44,3 +44,12 @@
 - Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
 - Impact: Auth Service can now run as an isolated container in the full local Compose stack.
 - Notes: No API contract deviation.
+
+## 2026-03-28T21:05:00+05:30
+
+- Scope: auth-service
+- Type: chore
+- Summary: Added an app-owned Dockerfile and independent image build contract for Auth Service.
+- Files: apps/auth-service/Dockerfile, docker-compose.yml, package.json, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md
+- Impact: Auth Service can now be built and deployed more explicitly as an independent container image.
+- Notes: No API contract deviation.

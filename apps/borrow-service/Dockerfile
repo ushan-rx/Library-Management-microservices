@@ -1,8 +1,5 @@
 FROM node:20-alpine AS builder
 
-ARG APP_NAME
-ARG PRISMA_SCHEMA
-
 WORKDIR /app
 
 RUN apk add --no-cache openssl
@@ -12,12 +9,10 @@ RUN npm ci
 
 COPY . .
 
-RUN if [ -n "$PRISMA_SCHEMA" ]; then npx prisma generate --schema "$PRISMA_SCHEMA"; fi
-RUN npm run build:$APP_NAME
+RUN npx prisma generate --schema apps/borrow-service/prisma/schema.prisma
+RUN npm run build:borrow-service
 
 FROM node:20-alpine AS runner
-
-ARG APP_NAME
 
 WORKDIR /app
 
@@ -28,7 +23,7 @@ RUN apk add --no-cache openssl
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/apps ./apps
+COPY --from=builder /app/dist ./dist
 
-CMD ["sh", "-c", "node dist/apps/${APP_NAME}/main"]
+CMD ["sh", "-c", "npx prisma db push --schema apps/borrow-service/prisma/schema.prisma --skip-generate && node dist/apps/borrow-service/main"]

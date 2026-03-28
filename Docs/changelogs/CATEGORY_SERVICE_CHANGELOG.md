@@ -43,3 +43,12 @@
 - Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
 - Impact: Category Service can now run as an isolated container and participate in the Compose-based local runtime.
 - Notes: No API contract deviation.
+
+## 2026-03-28T21:05:00+05:30
+
+- Scope: category-service
+- Type: chore
+- Summary: Added an app-owned Dockerfile and independent image build contract for Category Service.
+- Files: apps/category-service/Dockerfile, docker-compose.yml, package.json, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md
+- Impact: Category Service can now be built and deployed with an explicit service-owned container definition.
+- Notes: No API contract deviation.

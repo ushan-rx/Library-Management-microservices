@@ -51,3 +51,12 @@
 - Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
 - Impact: Borrow Service can now run as an isolated container in a full local microservice runtime.
 - Notes: No API contract deviation.
+
+## 2026-03-28T21:05:00+05:30
+
+- Scope: borrow-service
+- Type: chore
+- Summary: Added an app-owned Dockerfile and independent image build contract for Borrow Service.
+- Files: apps/borrow-service/Dockerfile, docker-compose.yml, package.json, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md
+- Impact: Borrow Service can now be built and deployed with an explicit service-owned container definition.
+- Notes: No API contract deviation.

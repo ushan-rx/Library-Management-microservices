@@ -97,5 +97,5 @@ Move from local Docker Compose orchestration toward production-grade service lif
 
 ## Current Status
 
-- Priority 1 is now in progress.
-- The initial implementation target is a full multi-container local runtime for the gateway and all six domain services.
+- Priority 1 is implemented with a full multi-container local runtime for the gateway and all six domain services.
+- Priority 2 is now in progress with per-service Dockerfiles and explicit deployment-contract documentation.

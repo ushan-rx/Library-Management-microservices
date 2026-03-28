@@ -81,6 +81,7 @@ Important references:
 - [docs/specs/API_GATEWAY.md](./docs/specs/API_GATEWAY.md)
 - [docs/specs/AUTH_ARCHITECTURE.md](./docs/specs/AUTH_ARCHITECTURE.md)
 - [docs/agents/MICROSERVICES_EVOLUTION_PLAN.md](./docs/agents/MICROSERVICES_EVOLUTION_PLAN.md)
+- [docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md](./docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md)
 
 ## Prerequisites
 
@@ -140,6 +141,18 @@ Tail container logs:
 npm run docker:logs:all
 ```
 
+Build a single service image:
+
+```bash
+npm run docker:build:api-gateway
+npm run docker:build:auth-service
+npm run docker:build:member-service
+npm run docker:build:category-service
+npm run docker:build:book-service
+npm run docker:build:borrow-service
+npm run docker:build:fine-payment-service
+```
+
 ## Run the System Locally
 
 Start each service in a separate terminal:
@@ -178,6 +191,14 @@ This starts:
 In Compose mode, service-to-service traffic uses internal DNS names such as `auth-service`, `book-service`, and `postgres-core`, while the public entry point remains:
 
 - `http://localhost:3000`
+
+## Independent Container Deployment
+
+Each application now has its own Dockerfile under `apps/<service>/Dockerfile`.
+
+Use the per-service image build commands when you want to ship or test a service independently of the full stack. The required runtime variables, ports, and health endpoints are documented in:
+
+- [docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md](./docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md)
 
 ## Main Entry Point
 
