@@ -17,3 +17,12 @@
 - Files: apps/borrow-service/prisma/schema.prisma, package.json, package-lock.json, .env.example, docs/shared/PHASE_1_DEVELOPMENT_FOUNDATION.md
 - Impact: Borrow service now has a validated Prisma entry point and a defined target database for later schema implementation.
 - Notes: No API contract deviation.
+
+## 2026-03-28T10:35:00+05:30
+
+- Scope: borrow-service
+- Type: feat
+- Summary: Implemented borrow orchestration with downstream member, book, and fine clients plus return and overdue handling for Phase 8.
+- Files: apps/borrow-service/src/borrow-service.module.ts, apps/borrow-service/src/bootstrap.ts, apps/borrow-service/src/main.ts, apps/borrow-service/src/borrows/borrow.controller.ts, apps/borrow-service/src/borrows/borrow.service.ts, apps/borrow-service/src/borrows/borrow.service.spec.ts, apps/borrow-service/src/borrows/borrow.repository.ts, apps/borrow-service/src/borrows/in-memory-borrow.repository.ts, apps/borrow-service/src/borrows/prisma-borrow.repository.ts, apps/borrow-service/src/borrows/dto/create-borrow.dto.ts, apps/borrow-service/src/borrows/dto/return-book.dto.ts, apps/borrow-service/src/borrows/dto/update-borrow.dto.ts, apps/borrow-service/src/borrows/dto/list-borrows.query.dto.ts, apps/borrow-service/src/borrows/enums/borrow-status.enum.ts, apps/borrow-service/src/borrows/interfaces/borrow.interface.ts, apps/borrow-service/src/integrations/member.client.ts, apps/borrow-service/src/integrations/book.client.ts, apps/borrow-service/src/integrations/fine.client.ts, apps/borrow-service/src/platform/roles/borrow-role.enum.ts, apps/borrow-service/src/platform/roles/roles.decorator.ts, apps/borrow-service/src/platform/roles/roles.guard.ts, apps/borrow-service/src/prisma/prisma.service.ts, apps/borrow-service/src/common/borrow-response.helpers.ts, apps/borrow-service/src/common/validation-exception.factory.ts, apps/borrow-service/test/app.e2e-spec.ts, apps/borrow-service/prisma/schema.prisma, package.json, .env.example, README.md
+- Impact: Borrow service is now a runnable coordinating service that validates member eligibility, checks book availability, updates inventory, processes returns, and triggers overdue fine creation.
+- Notes: Borrow fine amount is configurable through `BORROW_FINE_AMOUNT_PER_DAY` and defaults to `100`.

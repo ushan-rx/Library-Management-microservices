@@ -7,3 +7,32 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum BorrowStatus {
+  BORROWED
+  RETURNED
+  CANCELLED
+}
+
+model Borrow {
+  id              String       @id @default(uuid()) @db.Uuid
+  memberId        String       @db.Uuid
+  bookId          String       @db.Uuid
+  borrowDate      DateTime     @db.Date
+  dueDate         DateTime     @db.Date
+  returnDate      DateTime?    @db.Date
+  status          BorrowStatus
+  fineGenerated   Boolean      @default(false)
+  createdByUserId String?      @db.Uuid
+  returnedByUserId String?     @db.Uuid
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  deletedAt       DateTime?
+
+  @@index([memberId])
+  @@index([bookId])
+  @@index([status])
+  @@index([borrowDate])
+  @@index([dueDate])
+  @@map("borrows")
+}

@@ -19,6 +19,7 @@
     "start:auth-service": "nest start auth-service",
     "start:member-service": "nest start member-service",
     "start:book-service": "nest start book-service",
+    "start:borrow-service": "nest start borrow-service",
     "start:category-service": "nest start category-service",
     "start:dev": "nest start api-gateway --watch",
     "start:debug": "nest start api-gateway --debug --watch",
