@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
 export interface RequestWithContext extends Request {
-  body?: unknown;
+  body: unknown;
   correlationId?: string;
   requestStartedAt?: number;
   downstreamService?: string;

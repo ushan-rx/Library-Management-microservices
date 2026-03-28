@@ -1,9 +1,9 @@
 import { All, Controller, Req, Res } from '@nestjs/common';
-import { Response } from 'express';
 import { GatewayAuthService } from '../platform/auth/gateway-auth.service';
-import { RequestWithContext } from '../platform/request-context/request-context.types';
 import { GatewayProxyService } from './gateway-proxy.service';
 import { RouteAccessPolicyService } from './route-access-policy.service';
+import type { Response } from 'express';
+import type { RequestWithContext } from '../platform/request-context/request-context.types';
 
 @Controller()
 export class GatewayProxyController {
