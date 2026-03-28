@@ -12,6 +12,7 @@ Current implementation status:
 - the Member Service is now runnable for member CRUD, eligibility checks, and health checks
 - the Category Service is now runnable for category CRUD, existence checks, and health checks
 - the Book Service is now runnable for catalog CRUD, availability checks, and inventory updates
+- the Borrow Service is now runnable for borrow creation, returns, overdue checks, and downstream orchestration
 
 Service apps:
 
@@ -133,6 +134,22 @@ GET http://localhost:3003/books
 GET http://localhost:3003/books/:bookId/availability
 POST http://localhost:3003/books/:bookId/inventory/decrement
 POST http://localhost:3003/books/:bookId/inventory/increment
+```
+
+Borrow service check commands:
+
+```bash
+npm run start:borrow-service
+```
+
+Then check:
+
+```bash
+GET http://localhost:3005/borrows/health
+POST http://localhost:3005/borrows
+GET http://localhost:3005/borrows
+POST http://localhost:3005/borrows/:borrowId/return
+GET http://localhost:3005/borrows/:borrowId/overdue-status
 ```
 
 Prisma validation commands:

@@ -439,8 +439,6 @@ Expose and verify API documentation across services and the gateway demonstratio
 - enable Swagger for each service
 - ensure DTOs and response shapes are documented cleanly
 - verify endpoint visibility and contract alignment
-- decide and implement how gateway-related documentation proof will be shown
-- prepare a screenshot checklist and documentation evidence list
 
 ### Deliverables
 
@@ -451,7 +449,6 @@ Expose and verify API documentation across services and the gateway demonstratio
 
 - each service has usable Swagger documentation
 - the documentation reflects implemented contracts
-- screenshot targets for assignment evidence are clear
 
 ### Tests to run
 
