@@ -1,6 +1,6 @@
 # Library System Microservices
 
-Library Management System backend built as a NestJS monorepo with an API Gateway and six domain services.
+Library Management System backend built as NestJS microservices with an API Gateway and six domain services.
 
 The system supports:
 
@@ -39,15 +39,15 @@ Each business service owns its own persistence model and Prisma schema. Client t
 
 ## Services and Default Ports
 
-| Service | Port | Purpose |
-|---|---:|---|
-| API Gateway | `3000` | Public entry point, auth enforcement, request forwarding |
-| Auth Service | `3001` | Register, login, token validation, profile |
-| Member Service | `3002` | Member CRUD and borrow eligibility |
-| Book Service | `3003` | Book catalog, availability, inventory updates |
-| Category Service | `3004` | Category CRUD and existence checks |
-| Borrow Service | `3005` | Borrow creation, returns, overdue handling |
-| Fine Payment Service | `3006` | Fine records and payment workflows |
+| Service              |   Port | Purpose                                                  |
+| -------------------- | -----: | -------------------------------------------------------- |
+| API Gateway          | `3000` | Public entry point, auth enforcement, request forwarding |
+| Auth Service         | `3001` | Register, login, token validation, profile               |
+| Member Service       | `3002` | Member CRUD and borrow eligibility                       |
+| Book Service         | `3003` | Book catalog, availability, inventory updates            |
+| Category Service     | `3004` | Category CRUD and existence checks                       |
+| Borrow Service       | `3005` | Borrow creation, returns, overdue handling               |
+| Fine Payment Service | `3006` | Fine records and payment workflows                       |
 
 ## Repository Layout
 
@@ -76,14 +76,10 @@ Canonical specifications and delivery docs are under `docs/`.
 
 Important references:
 
-- [docs/specs/README_SYSTEM.md](./docs/specs/README_SYSTEM.md)
 - [docs/specs/API_CONTRACTS.md](./docs/specs/API_CONTRACTS.md)
 - [docs/specs/DATA_SCHEMAS.md](./docs/specs/DATA_SCHEMAS.md)
 - [docs/specs/API_GATEWAY.md](./docs/specs/API_GATEWAY.md)
 - [docs/specs/AUTH_ARCHITECTURE.md](./docs/specs/AUTH_ARCHITECTURE.md)
-- [docs/agents/AGENT_GUIDE.md](./docs/agents/AGENT_GUIDE.md)
-- [docs/agents/PHASED_DEVELOPMENT_PLAN.md](./docs/agents/PHASED_DEVELOPMENT_PLAN.md)
-- [docs/agents/PHASE_14_RELEASE_CANDIDATE.md](./docs/agents/PHASE_14_RELEASE_CANDIDATE.md)
 
 ## Prerequisites
 
@@ -260,17 +256,3 @@ Service and gateway changelogs are in `docs/changelogs/`.
 - [docs/changelogs/BOOK_SERVICE_CHANGELOG.md](./docs/changelogs/BOOK_SERVICE_CHANGELOG.md)
 - [docs/changelogs/BORROW_SERVICE_CHANGELOG.md](./docs/changelogs/BORROW_SERVICE_CHANGELOG.md)
 - [docs/changelogs/FINE_PAYMENT_SERVICE_CHANGELOG.md](./docs/changelogs/FINE_PAYMENT_SERVICE_CHANGELOG.md)
-
-## Current Status
-
-The repository is in release-candidate shape:
-
-- all planned implementation phases are complete
-- the backend is runnable end-to-end through the API Gateway
-- the critical business flow is covered by gateway-based e2e tests
-- service and gateway Swagger docs are available
-
-## Notes
-
-- In this sandboxed environment, `npm run build` completes successfully and may then print `Error: spawn EPERM`. The compile step itself still succeeds.
-- The gateway is the intended public entry point for normal usage.
