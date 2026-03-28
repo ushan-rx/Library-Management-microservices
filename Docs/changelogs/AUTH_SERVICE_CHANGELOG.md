@@ -26,3 +26,12 @@
 - Files: apps/auth-service/src/auth-service.module.ts, apps/auth-service/src/main.ts, apps/auth-service/src/auth/auth.controller.ts, apps/auth-service/src/auth/auth.service.ts, apps/auth-service/src/auth/auth.guard.ts, apps/auth-service/src/auth/password.service.ts, apps/auth-service/src/prisma/prisma.service.ts, apps/auth-service/src/users/auth-user.repository.ts, apps/auth-service/src/users/in-memory-auth-user.repository.ts, apps/auth-service/src/users/prisma-auth-user.repository.ts, apps/auth-service/prisma/schema.prisma, apps/auth-service/test/app.e2e-spec.ts, package.json, package-lock.json, .env.example, README.md
 - Impact: Auth Service can now run independently and supports the required register, login, profile, validate, and health workflows for the next gateway integration phase.
 - Notes: No API contract deviation.
+
+## 2026-03-28T11:15:00+05:30
+
+- Scope: auth-service
+- Type: feature
+- Summary: Enabled Swagger documentation for auth routes, documented request DTOs, and added smoke tests for `/docs` and `/docs-json`.
+- Files: apps/shared/configure-swagger.ts, apps/auth-service/src/bootstrap.ts, apps/auth-service/src/main.ts, apps/auth-service/src/auth/auth.controller.ts, apps/auth-service/src/auth/dto/register.dto.ts, apps/auth-service/src/auth/dto/login.dto.ts, apps/auth-service/src/auth/dto/validate-token.dto.ts, apps/auth-service/test/app.e2e-spec.ts, README.md, package.json, package-lock.json
+- Impact: Auth Service now exposes usable OpenAPI documentation for register, login, validate, profile, and health workflows.
+- Notes: No API contract deviation.

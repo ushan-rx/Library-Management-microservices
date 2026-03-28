@@ -10,6 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../platform/roles/roles.decorator';
 import { BookRole } from '../platform/roles/book-role.enum';
 import { RolesGuard } from '../platform/roles/roles.guard';
@@ -20,15 +21,18 @@ import { ListBooksQueryDto } from './dto/list-books.query.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('books')
+@ApiTags('books')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @Get('health')
+  @ApiOperation({ summary: 'Get book-service health status' })
   health() {
     return this.bookService.health();
   }
 
   @Get(':bookId/availability')
+  @ApiOperation({ summary: 'Check whether a book is available to borrow' })
   availability(@Param('bookId') bookId: string) {
     return this.bookService.availability(bookId);
   }
@@ -36,16 +40,20 @@ export class BookController {
   @Post()
   @UseGuards(RolesGuard)
   @Roles(BookRole.ADMIN, BookRole.LIBRARIAN)
+  @ApiSecurity('x-user-role')
+  @ApiOperation({ summary: 'Create a new book record' })
   create(@Body() createBookDto: CreateBookDto) {
     return this.bookService.create(createBookDto);
   }
 
   @Get()
+  @ApiOperation({ summary: 'List books with optional filters' })
   list(@Query() query: ListBooksQueryDto) {
     return this.bookService.list(query);
   }
 
   @Get(':bookId')
+  @ApiOperation({ summary: 'Get a book by id' })
   getById(@Param('bookId') bookId: string) {
     return this.bookService.getById(bookId);
   }
@@ -53,6 +61,8 @@ export class BookController {
   @Put(':bookId')
   @UseGuards(RolesGuard)
   @Roles(BookRole.ADMIN, BookRole.LIBRARIAN)
+  @ApiSecurity('x-user-role')
+  @ApiOperation({ summary: 'Update a book by id' })
   update(
     @Param('bookId') bookId: string,
     @Body() updateBookDto: UpdateBookDto,
@@ -63,6 +73,8 @@ export class BookController {
   @Delete(':bookId')
   @UseGuards(RolesGuard)
   @Roles(BookRole.ADMIN)
+  @ApiSecurity('x-user-role')
+  @ApiOperation({ summary: 'Deactivate a book by id' })
   remove(@Param('bookId') bookId: string) {
     return this.bookService.remove(bookId);
   }
@@ -71,6 +83,8 @@ export class BookController {
   @HttpCode(200)
   @UseGuards(RolesGuard)
   @Roles(BookRole.ADMIN, BookRole.LIBRARIAN)
+  @ApiSecurity('x-user-role')
+  @ApiOperation({ summary: 'Decrease available book copies' })
   decrementInventory(
     @Param('bookId') bookId: string,
     @Body() inventoryAdjustDto: InventoryAdjustDto,
@@ -82,6 +96,8 @@ export class BookController {
   @HttpCode(200)
   @UseGuards(RolesGuard)
   @Roles(BookRole.ADMIN, BookRole.LIBRARIAN)
+  @ApiSecurity('x-user-role')
+  @ApiOperation({ summary: 'Increase available book copies' })
   incrementInventory(
     @Param('bookId') bookId: string,
     @Body() inventoryAdjustDto: InventoryAdjustDto,

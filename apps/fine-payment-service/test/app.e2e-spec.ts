@@ -31,6 +31,13 @@ interface HealthData {
   service: string;
 }
 
+interface SwaggerDocument {
+  info: {
+    title: string;
+  };
+  paths: Record<string, unknown>;
+}
+
 describe('Fine payment service (e2e)', () => {
   let app: INestApplication;
 
@@ -120,5 +127,21 @@ describe('Fine payment service (e2e)', () => {
     const body = response.body as SuccessResponse<HealthData>;
     expect(body.success).toBe(true);
     expect(body.data.service).toBe('fine-payment-service');
+  });
+
+  it('exposes Swagger docs endpoints', async () => {
+    await request(app.getHttpServer() as Server)
+      .get('/docs-json')
+      .expect(200)
+      .expect(({ body }) => {
+        const swaggerDocument = body as SwaggerDocument;
+
+        expect(swaggerDocument.info.title).toBe('Fine Payment Service');
+        expect(swaggerDocument.paths['/fines']).toBeDefined();
+      });
+
+    await request(app.getHttpServer() as Server)
+      .get('/docs')
+      .expect(200);
   });
 });

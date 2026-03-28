@@ -2,7 +2,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { configureSwagger } from '../../shared/configure-swagger';
 import { validationExceptionFactory } from './common/validation-exception.factory';
 
-export function configureCategoryServiceApp(app: INestApplication) {
+export function configureAuthServiceApp(app: INestApplication): void {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -11,14 +11,14 @@ export function configureCategoryServiceApp(app: INestApplication) {
     }),
   );
   configureSwagger(app, {
-    title: 'Category Service',
-    description: 'Category CRUD and category existence validation routes.',
+    title: 'Auth Service',
+    description:
+      'Authentication, token issuance, token validation, and authenticated profile routes.',
     security: {
-      type: 'apiKey',
-      schemeName: 'x-user-role',
-      headerName: 'x-user-role',
+      type: 'bearer',
+      schemeName: 'bearer',
       description:
-        'Trusted role header required for protected direct service routes.',
+        'JWT bearer token used for authenticated auth-service routes.',
     },
   });
 }

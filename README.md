@@ -14,6 +14,7 @@ Current implementation status:
 - the Book Service is now runnable for catalog CRUD, availability checks, and inventory updates
 - the Borrow Service is now runnable for borrow creation, returns, overdue checks, and downstream orchestration
 - the Fine Payment Service is now runnable for fine creation, payment recording, and fine lookups
+- Swagger documentation is now exposed for the gateway and each service at `/docs` and `/docs-json`
 
 Service apps:
 
@@ -72,6 +73,8 @@ Then check:
 ```bash
 GET http://localhost:3000/health
 GET http://localhost:3000/missing
+GET http://localhost:3000/docs
+GET http://localhost:3000/docs-json
 ```
 
 Auth service check commands:
@@ -88,6 +91,8 @@ POST http://localhost:3001/auth/register
 POST http://localhost:3001/auth/login
 GET http://localhost:3001/auth/profile
 POST http://localhost:3001/auth/validate
+GET http://localhost:3001/docs
+GET http://localhost:3001/docs-json
 ```
 
 Member service check commands:
@@ -103,6 +108,8 @@ GET http://localhost:3002/members/health
 POST http://localhost:3002/members
 GET http://localhost:3002/members
 GET http://localhost:3002/members/:memberId/eligibility
+GET http://localhost:3002/docs
+GET http://localhost:3002/docs-json
 ```
 
 Category service check commands:
@@ -118,6 +125,8 @@ GET http://localhost:3004/categories/health
 POST http://localhost:3004/categories
 GET http://localhost:3004/categories
 GET http://localhost:3004/categories/:categoryId/existence
+GET http://localhost:3004/docs
+GET http://localhost:3004/docs-json
 ```
 
 Book service check commands:
@@ -135,6 +144,8 @@ GET http://localhost:3003/books
 GET http://localhost:3003/books/:bookId/availability
 POST http://localhost:3003/books/:bookId/inventory/decrement
 POST http://localhost:3003/books/:bookId/inventory/increment
+GET http://localhost:3003/docs
+GET http://localhost:3003/docs-json
 ```
 
 Borrow service check commands:
@@ -151,6 +162,8 @@ POST http://localhost:3005/borrows
 GET http://localhost:3005/borrows
 POST http://localhost:3005/borrows/:borrowId/return
 GET http://localhost:3005/borrows/:borrowId/overdue-status
+GET http://localhost:3005/docs
+GET http://localhost:3005/docs-json
 ```
 
 Fine payment service check commands:
@@ -168,6 +181,8 @@ GET http://localhost:3006/fines
 POST http://localhost:3006/fines/:fineId/payments
 GET http://localhost:3006/fines/borrow/:borrowId
 GET http://localhost:3006/fines/member/:memberId
+GET http://localhost:3006/docs
+GET http://localhost:3006/docs-json
 ```
 
 Prisma validation commands:

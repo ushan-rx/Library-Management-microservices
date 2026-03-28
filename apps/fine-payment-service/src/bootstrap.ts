@@ -1,4 +1,5 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { configureSwagger } from '../../shared/configure-swagger';
 import { validationExceptionFactory } from './common/validation-exception.factory';
 
 export function configureFinePaymentServiceApp(app: INestApplication) {
@@ -9,4 +10,15 @@ export function configureFinePaymentServiceApp(app: INestApplication) {
       exceptionFactory: validationExceptionFactory,
     }),
   );
+  configureSwagger(app, {
+    title: 'Fine Payment Service',
+    description: 'Fine record, payment recording, and fine lookup routes.',
+    security: {
+      type: 'apiKey',
+      schemeName: 'x-user-role',
+      headerName: 'x-user-role',
+      description:
+        'Trusted role header required for protected direct service routes.',
+    },
+  });
 }

@@ -23,6 +23,13 @@ interface GatewayErrorResponse {
   path: string;
 }
 
+interface SwaggerDocument {
+  info: {
+    title: string;
+  };
+  paths: Record<string, unknown>;
+}
+
 describe('ApiGateway gateway foundation (e2e)', () => {
   let app: INestApplication;
 
@@ -77,6 +84,18 @@ describe('ApiGateway gateway foundation (e2e)', () => {
         expect(responseBody.error.code).toBe('ROUTE_NOT_FOUND');
         expect(responseBody.path).toBe('/missing');
         expect(headers['x-correlation-id']).toBeDefined();
+      });
+  });
+
+  it('exposes Swagger docs endpoints', () => {
+    return request(app.getHttpServer() as Server)
+      .get('/docs-json')
+      .expect(200)
+      .expect(({ body }) => {
+        const swaggerDocument = body as SwaggerDocument;
+
+        expect(swaggerDocument.info.title).toBe('API Gateway');
+        expect(swaggerDocument.paths['/health']).toBeDefined();
       });
   });
 });
