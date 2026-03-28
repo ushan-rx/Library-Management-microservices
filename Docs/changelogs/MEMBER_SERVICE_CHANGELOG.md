@@ -17,3 +17,12 @@
 - Files: apps/member-service/prisma/schema.prisma, package.json, package-lock.json, .env.example, docs/shared/PHASE_1_DEVELOPMENT_FOUNDATION.md
 - Impact: Member service now has a validated Prisma entry point and a defined target database for later schema implementation.
 - Notes: No API contract deviation.
+
+## 2026-03-27T21:40:00+05:30
+
+- Scope: member-service
+- Type: feat
+- Summary: Implemented member CRUD, eligibility checks, role guards, Prisma persistence, and member service tests for Phase 5.
+- Files: apps/member-service/src/member-service.module.ts, apps/member-service/src/bootstrap.ts, apps/member-service/src/main.ts, apps/member-service/src/members/member.controller.ts, apps/member-service/src/members/member.service.ts, apps/member-service/src/members/member.service.spec.ts, apps/member-service/src/members/member.repository.ts, apps/member-service/src/members/in-memory-member.repository.ts, apps/member-service/src/members/prisma-member.repository.ts, apps/member-service/src/platform/roles/member-role.enum.ts, apps/member-service/src/platform/roles/roles.decorator.ts, apps/member-service/src/platform/roles/roles.guard.ts, apps/member-service/src/prisma/prisma.service.ts, apps/member-service/test/app.e2e-spec.ts, apps/member-service/prisma/schema.prisma, package.json, .env.example, README.md
+- Impact: Member service is now a runnable business service with validated CRUD behavior, eligibility support for borrow flows, and service-level role protection.
+- Notes: Eligibility endpoint is left unguarded to support future internal borrow-service checks without premature gateway forwarding changes.
