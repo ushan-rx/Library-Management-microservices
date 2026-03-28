@@ -2,10 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { resolveConfigValue } from '../../shared/config/runtime-config.util';
+import { MetricsInterceptor } from '../../shared/observability/metrics.interceptor';
+import { MetricsService } from '../../shared/observability/metrics.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
 import { PasswordService } from './auth/password.service';
+import { MetricsController } from './metrics/metrics.controller';
 import { PrismaService } from './prisma/prisma.service';
 import { AUTH_USER_REPOSITORY } from './users/auth-user.repository';
 import { InMemoryAuthUserRepository } from './users/in-memory-auth-user.repository';
@@ -33,11 +36,13 @@ import { PrismaAuthUserRepository } from './users/prisma-auth-user.repository';
       }),
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, MetricsController],
   providers: [
     AuthService,
     AuthGuard,
     PasswordService,
+    MetricsInterceptor,
+    MetricsService,
     PrismaService,
     InMemoryAuthUserRepository,
     PrismaAuthUserRepository,

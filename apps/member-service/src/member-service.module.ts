@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MetricsInterceptor } from '../../shared/observability/metrics.interceptor';
+import { MetricsService } from '../../shared/observability/metrics.service';
 import { MemberController } from './members/member.controller';
 import { MEMBER_REPOSITORY } from './members/member.repository';
 import { MemberService } from './members/member.service';
 import { InMemoryMemberRepository } from './members/in-memory-member.repository';
+import { MetricsController } from './metrics/metrics.controller';
 import { PrismaMemberRepository } from './members/prisma-member.repository';
 import { PrismaService } from './prisma/prisma.service';
 import { RolesGuard } from './platform/roles/roles.guard';
@@ -15,10 +18,12 @@ import { RolesGuard } from './platform/roles/roles.guard';
       envFilePath: ['.env', '.env.example'],
     }),
   ],
-  controllers: [MemberController],
+  controllers: [MemberController, MetricsController],
   providers: [
     MemberService,
     RolesGuard,
+    MetricsInterceptor,
+    MetricsService,
     PrismaService,
     InMemoryMemberRepository,
     PrismaMemberRepository,

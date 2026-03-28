@@ -83,6 +83,7 @@ Important references:
 - [docs/agents/MICROSERVICES_EVOLUTION_PLAN.md](./docs/agents/MICROSERVICES_EVOLUTION_PLAN.md)
 - [docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md](./docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md)
 - [docs/deployment/CONFIGURATION_AND_SECRETS.md](./docs/deployment/CONFIGURATION_AND_SECRETS.md)
+- [docs/deployment/OBSERVABILITY.md](./docs/deployment/OBSERVABILITY.md)
 
 ## Prerequisites
 
@@ -318,6 +319,7 @@ Current observability support includes:
 - downstream route-group context in gateway logs
 - correlation ID propagation in downstream HTTP calls from book-service and borrow-service
 - structured downstream service-call logs for validation, inventory, and fine operations
+- Prometheus-style `/metrics` endpoints on the gateway and all backend services
 
 ## Changelogs
 

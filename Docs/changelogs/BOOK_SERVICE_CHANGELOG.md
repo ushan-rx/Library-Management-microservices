@@ -69,3 +69,12 @@
 - Files: apps/shared/config/runtime-config.util.ts, apps/shared/config/runtime-config.util.spec.ts, apps/book-service/src/main.ts, apps/book-service/src/prisma/prisma.service.ts, docker-compose.yml, .env.example, .env.compose.example, docs/deployment/CONFIGURATION_AND_SECRETS.md
 - Impact: Book Service can now resolve its database configuration from mounted files as well as direct environment variables.
 - Notes: No API contract deviation.
+
+## 2026-03-28T21:55:00+05:30
+
+- Scope: book-service
+- Type: feature
+- Summary: Added shared request metrics collection and a Prometheus-style `/metrics` endpoint to Book Service.
+- Files: apps/shared/observability/metrics.service.ts, apps/shared/observability/metrics.interceptor.ts, apps/book-service/src/book-service.module.ts, apps/book-service/src/bootstrap.ts, apps/book-service/src/metrics/metrics.controller.ts, README.md, docs/deployment/OBSERVABILITY.md
+- Impact: Book Service now exposes process-local request metrics for operational visibility.
+- Notes: No API contract deviation.

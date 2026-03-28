@@ -9,7 +9,10 @@ export class RouteAccessPolicyService {
     const normalizedMethod = method.toUpperCase();
     const normalizedPath = path.startsWith('/') ? path : `/${path}`;
 
-    if (normalizedMethod === 'GET' && normalizedPath === '/health') {
+    if (
+      normalizedMethod === 'GET' &&
+      ['/health', '/metrics'].includes(normalizedPath)
+    ) {
       return true;
     }
 

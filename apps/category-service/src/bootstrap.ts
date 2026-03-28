@@ -1,8 +1,10 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { configureSwagger } from '../../shared/configure-swagger';
+import { MetricsInterceptor } from '../../shared/observability/metrics.interceptor';
 import { validationExceptionFactory } from './common/validation-exception.factory';
 
 export function configureCategoryServiceApp(app: INestApplication) {
+  app.useGlobalInterceptors(app.get(MetricsInterceptor));
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

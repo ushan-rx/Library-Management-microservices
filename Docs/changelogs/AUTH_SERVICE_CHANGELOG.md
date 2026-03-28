@@ -62,3 +62,12 @@
 - Files: apps/shared/config/runtime-config.util.ts, apps/shared/config/runtime-config.util.spec.ts, apps/auth-service/src/main.ts, apps/auth-service/src/auth-service.module.ts, apps/auth-service/src/prisma/prisma.service.ts, docker-compose.yml, .env.example, .env.compose.example, README.md, docs/deployment/CONFIGURATION_AND_SECRETS.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
 - Impact: Auth Service can now resolve secrets and database configuration from mounted files as well as direct environment variables.
 - Notes: No API contract deviation.
+
+## 2026-03-28T21:55:00+05:30
+
+- Scope: auth-service
+- Type: feature
+- Summary: Added shared request metrics collection and a Prometheus-style `/metrics` endpoint to Auth Service.
+- Files: apps/shared/observability/metrics.service.ts, apps/shared/observability/metrics.interceptor.ts, apps/shared/observability/metrics.service.spec.ts, apps/auth-service/src/auth-service.module.ts, apps/auth-service/src/bootstrap.ts, apps/auth-service/src/metrics/metrics.controller.ts, apps/auth-service/test/app.e2e-spec.ts, README.md, docs/deployment/OBSERVABILITY.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: Auth Service now exposes process-local request metrics for health visibility and scraping.
+- Notes: No API contract deviation.
