@@ -34,3 +34,12 @@
 - Files: apps/shared/configure-swagger.ts, apps/member-service/src/bootstrap.ts, apps/member-service/src/members/member.controller.ts, apps/member-service/src/members/dto/create-member.dto.ts, apps/member-service/src/members/dto/list-members.query.dto.ts, apps/member-service/src/members/dto/update-member.dto.ts, apps/member-service/test/app.e2e-spec.ts, README.md, package.json, package-lock.json
 - Impact: Member Service now exposes a usable OpenAPI surface for CRUD and eligibility workflows.
 - Notes: No API contract deviation.
+
+## 2026-03-28T20:40:00+05:30
+
+- Scope: member-service
+- Type: chore
+- Summary: Added container build support and Docker Compose runtime wiring for Member Service, including automatic schema preparation on container startup.
+- Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: Member Service can now run independently as a container in the local multi-service stack.
+- Notes: No API contract deviation.

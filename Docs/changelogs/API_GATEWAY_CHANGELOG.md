@@ -71,3 +71,12 @@
 - Files: README.md, PROJECT_STRUCTURE.md, docs/agents/PHASE_14_RELEASE_CANDIDATE.md
 - Impact: The repository handoff docs now match the implemented system and the final verification state.
 - Notes: No API contract deviation.
+
+## 2026-03-28T20:40:00+05:30
+
+- Scope: api-gateway
+- Type: chore
+- Summary: Added container-ready full-stack Docker Compose support and wired the gateway for service-name based runtime routing inside the container network.
+- Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: The gateway can now participate in a multi-container local runtime instead of depending only on manually started local processes.
+- Notes: No API contract deviation.

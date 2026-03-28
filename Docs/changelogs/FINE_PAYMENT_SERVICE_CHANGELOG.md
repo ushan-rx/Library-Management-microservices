@@ -34,3 +34,12 @@
 - Files: apps/shared/configure-swagger.ts, apps/fine-payment-service/src/bootstrap.ts, apps/fine-payment-service/src/fines/fine.controller.ts, apps/fine-payment-service/src/fines/dto/create-fine.dto.ts, apps/fine-payment-service/src/fines/dto/list-fines.query.dto.ts, apps/fine-payment-service/src/fines/dto/record-fine-payment.dto.ts, apps/fine-payment-service/test/app.e2e-spec.ts, README.md, package.json, package-lock.json
 - Impact: Fine Payment Service now exposes a usable OpenAPI surface for fine creation, payment recording, and lookup workflows.
 - Notes: No API contract deviation.
+
+## 2026-03-28T20:40:00+05:30
+
+- Scope: fine-payment-service
+- Type: chore
+- Summary: Added container build support and Docker Compose runtime wiring for Fine Payment Service, including automatic schema preparation on startup.
+- Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: Fine Payment Service can now run as an isolated container in the full local Compose stack.
+- Notes: No API contract deviation.

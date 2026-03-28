@@ -34,3 +34,12 @@
 - Files: apps/shared/configure-swagger.ts, apps/category-service/src/bootstrap.ts, apps/category-service/src/categories/category.controller.ts, apps/category-service/src/categories/dto/create-category.dto.ts, apps/category-service/src/categories/dto/list-categories.query.dto.ts, apps/category-service/src/categories/dto/update-category.dto.ts, apps/category-service/test/app.e2e-spec.ts, README.md, package.json, package-lock.json
 - Impact: Category Service now exposes a usable OpenAPI surface for CRUD and existence workflows.
 - Notes: No API contract deviation.
+
+## 2026-03-28T20:40:00+05:30
+
+- Scope: category-service
+- Type: chore
+- Summary: Added container build support and Docker Compose runtime wiring for Category Service, including automatic schema preparation on startup.
+- Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: Category Service can now run as an isolated container and participate in the Compose-based local runtime.
+- Notes: No API contract deviation.

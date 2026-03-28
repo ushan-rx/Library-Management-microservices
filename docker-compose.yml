@@ -23,5 +23,274 @@ services:
       retries: 10
       start_period: 10s
 
+  auth-service:
+    build:
+      context: .
+      dockerfile: docker/node-service.Dockerfile
+      args:
+        APP_NAME: auth-service
+        PRISMA_SCHEMA: apps/auth-service/prisma/schema.prisma
+    container_name: library-auth-service
+    restart: unless-stopped
+    depends_on:
+      postgres-core:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      AUTH_SERVICE_PORT: 3001
+      AUTH_STORAGE_DRIVER: prisma
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-local-env}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1h}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/auth_db?schema=public
+      AUTH_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/auth_db?schema=public
+      AUTH_SERVICE_BASE_URL: http://auth-service:3001
+    command:
+      [
+        "sh",
+        "-c",
+        "npx prisma db push --schema apps/auth-service/prisma/schema.prisma --skip-generate && node dist/apps/auth-service/main",
+      ]
+    ports:
+      - "3001:3001"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3001/auth/health > /dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  member-service:
+    build:
+      context: .
+      dockerfile: docker/node-service.Dockerfile
+      args:
+        APP_NAME: member-service
+        PRISMA_SCHEMA: apps/member-service/prisma/schema.prisma
+    container_name: library-member-service
+    restart: unless-stopped
+    depends_on:
+      postgres-core:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3002
+      MEMBER_SERVICE_PORT: 3002
+      MEMBER_STORAGE_DRIVER: prisma
+      DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/member_db?schema=public
+      MEMBER_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/member_db?schema=public
+      MEMBER_SERVICE_BASE_URL: http://member-service:3002
+    command:
+      [
+        "sh",
+        "-c",
+        "npx prisma db push --schema apps/member-service/prisma/schema.prisma --skip-generate && node dist/apps/member-service/main",
+      ]
+    ports:
+      - "3002:3002"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3002/members/health > /dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  category-service:
+    build:
+      context: .
+      dockerfile: docker/node-service.Dockerfile
+      args:
+        APP_NAME: category-service
+        PRISMA_SCHEMA: apps/category-service/prisma/schema.prisma
+    container_name: library-category-service
+    restart: unless-stopped
+    depends_on:
+      postgres-core:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3004
+      CATEGORY_SERVICE_PORT: 3004
+      CATEGORY_STORAGE_DRIVER: prisma
+      DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/category_db?schema=public
+      CATEGORY_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/category_db?schema=public
+      CATEGORY_SERVICE_BASE_URL: http://category-service:3004
+    command:
+      [
+        "sh",
+        "-c",
+        "npx prisma db push --schema apps/category-service/prisma/schema.prisma --skip-generate && node dist/apps/category-service/main",
+      ]
+    ports:
+      - "3004:3004"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3004/categories/health > /dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  book-service:
+    build:
+      context: .
+      dockerfile: docker/node-service.Dockerfile
+      args:
+        APP_NAME: book-service
+        PRISMA_SCHEMA: apps/book-service/prisma/schema.prisma
+    container_name: library-book-service
+    restart: unless-stopped
+    depends_on:
+      postgres-core:
+        condition: service_healthy
+      category-service:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3003
+      BOOK_SERVICE_PORT: 3003
+      BOOK_STORAGE_DRIVER: prisma
+      BOOK_VALIDATE_CATEGORY_ON_WRITE: ${BOOK_VALIDATE_CATEGORY_ON_WRITE:-true}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/book_db?schema=public
+      BOOK_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/book_db?schema=public
+      BOOK_SERVICE_BASE_URL: http://book-service:3003
+      CATEGORY_SERVICE_BASE_URL: http://category-service:3004
+    command:
+      [
+        "sh",
+        "-c",
+        "npx prisma db push --schema apps/book-service/prisma/schema.prisma --skip-generate && node dist/apps/book-service/main",
+      ]
+    ports:
+      - "3003:3003"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3003/books/health > /dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  fine-payment-service:
+    build:
+      context: .
+      dockerfile: docker/node-service.Dockerfile
+      args:
+        APP_NAME: fine-payment-service
+        PRISMA_SCHEMA: apps/fine-payment-service/prisma/schema.prisma
+    container_name: library-fine-payment-service
+    restart: unless-stopped
+    depends_on:
+      postgres-core:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3006
+      FINE_PAYMENT_SERVICE_PORT: 3006
+      FINE_STORAGE_DRIVER: prisma
+      DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/fine_db?schema=public
+      FINE_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/fine_db?schema=public
+      FINE_PAYMENT_SERVICE_BASE_URL: http://fine-payment-service:3006
+    command:
+      [
+        "sh",
+        "-c",
+        "npx prisma db push --schema apps/fine-payment-service/prisma/schema.prisma --skip-generate && node dist/apps/fine-payment-service/main",
+      ]
+    ports:
+      - "3006:3006"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3006/fines/health > /dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  borrow-service:
+    build:
+      context: .
+      dockerfile: docker/node-service.Dockerfile
+      args:
+        APP_NAME: borrow-service
+        PRISMA_SCHEMA: apps/borrow-service/prisma/schema.prisma
+    container_name: library-borrow-service
+    restart: unless-stopped
+    depends_on:
+      postgres-core:
+        condition: service_healthy
+      member-service:
+        condition: service_healthy
+      book-service:
+        condition: service_healthy
+      fine-payment-service:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3005
+      BORROW_SERVICE_PORT: 3005
+      BORROW_STORAGE_DRIVER: prisma
+      BORROW_FINE_AMOUNT_PER_DAY: ${BORROW_FINE_AMOUNT_PER_DAY:-100}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/borrow_db?schema=public
+      BORROW_DATABASE_URL: postgresql://${POSTGRES_USER:-library_admin}:${POSTGRES_PASSWORD:-library_password}@postgres-core:5432/borrow_db?schema=public
+      BORROW_SERVICE_BASE_URL: http://borrow-service:3005
+      MEMBER_SERVICE_BASE_URL: http://member-service:3002
+      BOOK_SERVICE_BASE_URL: http://book-service:3003
+      FINE_PAYMENT_SERVICE_BASE_URL: http://fine-payment-service:3006
+    command:
+      [
+        "sh",
+        "-c",
+        "npx prisma db push --schema apps/borrow-service/prisma/schema.prisma --skip-generate && node dist/apps/borrow-service/main",
+      ]
+    ports:
+      - "3005:3005"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3005/borrows/health > /dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: docker/node-service.Dockerfile
+      args:
+        APP_NAME: api-gateway
+        PRISMA_SCHEMA: ""
+    container_name: library-api-gateway
+    restart: unless-stopped
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      member-service:
+        condition: service_healthy
+      category-service:
+        condition: service_healthy
+      book-service:
+        condition: service_healthy
+      borrow-service:
+        condition: service_healthy
+      fine-payment-service:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      API_GATEWAY_PORT: 3000
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-local-env}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
+      AUTH_SERVICE_BASE_URL: http://auth-service:3001
+      MEMBER_SERVICE_BASE_URL: http://member-service:3002
+      CATEGORY_SERVICE_BASE_URL: http://category-service:3004
+      BOOK_SERVICE_BASE_URL: http://book-service:3003
+      BORROW_SERVICE_BASE_URL: http://borrow-service:3005
+      FINE_PAYMENT_SERVICE_BASE_URL: http://fine-payment-service:3006
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/health > /dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
 volumes:
   postgres-core-data:

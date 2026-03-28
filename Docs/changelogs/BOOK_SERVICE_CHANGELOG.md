@@ -42,3 +42,12 @@
 - Files: apps/book-service/src/integrations/category.client.ts, apps/book-service/src/integrations/downstream-request.util.ts, README.md
 - Impact: Category validation failures and timings are now easier to trace from book-service logs without changing request or response contracts.
 - Notes: No API contract deviation.
+
+## 2026-03-28T20:40:00+05:30
+
+- Scope: book-service
+- Type: chore
+- Summary: Added container build support and Docker Compose runtime wiring for Book Service, including internal routing to Category Service and automatic schema preparation.
+- Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: Book Service can now run as an isolated container with container-network dependencies resolved through service names.
+- Notes: No API contract deviation.

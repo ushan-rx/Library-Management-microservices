@@ -42,3 +42,12 @@
 - Files: apps/borrow-service/src/integrations/member.client.ts, apps/borrow-service/src/integrations/book.client.ts, apps/borrow-service/src/integrations/fine.client.ts, apps/borrow-service/src/integrations/downstream-request.util.ts, README.md
 - Impact: Borrow orchestration now produces traceable downstream call logs with durations, target services, and correlation IDs for both success and failure paths.
 - Notes: No API contract deviation.
+
+## 2026-03-28T20:40:00+05:30
+
+- Scope: borrow-service
+- Type: chore
+- Summary: Added container build support and Docker Compose runtime wiring for Borrow Service, including service-name based downstream URLs and automatic schema preparation.
+- Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: Borrow Service can now run as an isolated container in a full local microservice runtime.
+- Notes: No API contract deviation.

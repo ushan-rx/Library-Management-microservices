@@ -80,6 +80,7 @@ Important references:
 - [docs/specs/DATA_SCHEMAS.md](./docs/specs/DATA_SCHEMAS.md)
 - [docs/specs/API_GATEWAY.md](./docs/specs/API_GATEWAY.md)
 - [docs/specs/AUTH_ARCHITECTURE.md](./docs/specs/AUTH_ARCHITECTURE.md)
+- [docs/agents/MICROSERVICES_EVOLUTION_PLAN.md](./docs/agents/MICROSERVICES_EVOLUTION_PLAN.md)
 
 ## Prerequisites
 
@@ -127,6 +128,18 @@ Stop PostgreSQL:
 npm run docker:down
 ```
 
+Start the full multi-container stack:
+
+```bash
+npm run docker:up:all
+```
+
+Tail container logs:
+
+```bash
+npm run docker:logs:all
+```
+
 ## Run the System Locally
 
 Start each service in a separate terminal:
@@ -142,6 +155,29 @@ npm run start
 ```
 
 The final `npm run start` command starts the API Gateway.
+
+## Run the System with Docker Compose
+
+Build and start the full stack:
+
+```bash
+npm run docker:up:all
+```
+
+This starts:
+
+- PostgreSQL
+- Auth Service
+- Member Service
+- Category Service
+- Book Service
+- Borrow Service
+- Fine Payment Service
+- API Gateway
+
+In Compose mode, service-to-service traffic uses internal DNS names such as `auth-service`, `book-service`, and `postgres-core`, while the public entry point remains:
+
+- `http://localhost:3000`
 
 ## Main Entry Point
 

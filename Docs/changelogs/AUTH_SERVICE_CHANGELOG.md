@@ -35,3 +35,12 @@
 - Files: apps/shared/configure-swagger.ts, apps/auth-service/src/bootstrap.ts, apps/auth-service/src/main.ts, apps/auth-service/src/auth/auth.controller.ts, apps/auth-service/src/auth/dto/register.dto.ts, apps/auth-service/src/auth/dto/login.dto.ts, apps/auth-service/src/auth/dto/validate-token.dto.ts, apps/auth-service/test/app.e2e-spec.ts, README.md, package.json, package-lock.json
 - Impact: Auth Service now exposes usable OpenAPI documentation for register, login, validate, profile, and health workflows.
 - Notes: No API contract deviation.
+
+## 2026-03-28T20:40:00+05:30
+
+- Scope: auth-service
+- Type: chore
+- Summary: Added container build support and Docker Compose runtime wiring for Auth Service, including schema preparation on container startup.
+- Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: Auth Service can now run as an isolated container in the full local Compose stack.
+- Notes: No API contract deviation.
