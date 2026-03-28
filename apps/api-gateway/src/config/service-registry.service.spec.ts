@@ -1,5 +1,5 @@
-import { Test } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
+import { Test } from '@nestjs/testing';
 import { gatewayConfig } from './gateway.config';
 import { ServiceRegistryService } from './service-registry.service';
 
@@ -50,6 +50,9 @@ describe('ServiceRegistryService', () => {
     );
     expect(serviceRegistry.resolveTarget('/members/123')?.baseUrl).toContain(
       '3002',
+    );
+    expect(serviceRegistry.resolveTarget('/books/123')?.baseUrl).toContain(
+      '3003',
     );
     expect(serviceRegistry.resolveTarget('/missing')).toBeNull();
   });

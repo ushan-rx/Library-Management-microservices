@@ -1,9 +1,9 @@
-import { ValidationPipe, INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Server } from 'http';
 import request from 'supertest';
 import { AuthServiceModule } from './../src/auth-service.module';
-import { validationExceptionFactory } from './../src/common/validation-exception.factory';
+import { configureAuthServiceApp } from './../src/bootstrap';
 
 interface AuthSuccessResponse<T> {
   success: boolean;
@@ -36,6 +36,13 @@ interface HealthResponseData {
   service: string;
 }
 
+interface SwaggerDocument {
+  info: {
+    title: string;
+  };
+  paths: Record<string, unknown>;
+}
+
 describe('Auth service (e2e)', () => {
   let app: INestApplication;
 
@@ -50,13 +57,7 @@ describe('Auth service (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        transform: true,
-        exceptionFactory: validationExceptionFactory,
-      }),
-    );
+    configureAuthServiceApp(app);
     await app.init();
   });
 
@@ -160,5 +161,21 @@ describe('Auth service (e2e)', () => {
 
     expect(responseBody.success).toBe(true);
     expect(responseBody.data.service).toBe('auth-service');
+  });
+
+  it('exposes Swagger docs endpoints', async () => {
+    await request(app.getHttpServer() as Server)
+      .get('/docs-json')
+      .expect(200)
+      .expect(({ body }) => {
+        const swaggerDocument = body as SwaggerDocument;
+
+        expect(swaggerDocument.info.title).toBe('Auth Service');
+        expect(swaggerDocument.paths['/auth/login']).toBeDefined();
+      });
+
+    await request(app.getHttpServer() as Server)
+      .get('/docs')
+      .expect(200);
   });
 });

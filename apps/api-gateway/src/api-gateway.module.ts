@@ -1,6 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 import { gatewayConfig } from './config/gateway.config';
 import { ServiceRegistryService } from './config/service-registry.service';
 import { HealthController } from './health/health.controller';
@@ -19,13 +18,6 @@ import { ApiGatewayService } from './services/api-gateway.service';
       isGlobal: true,
       load: [gatewayConfig],
       envFilePath: ['.env', '.env.example'],
-    }),
-    JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        secret:
-          configService.get<string>('JWT_SECRET') ?? 'change-me-in-local-env',
-      }),
     }),
   ],
   controllers: [HealthController, GatewayProxyController],

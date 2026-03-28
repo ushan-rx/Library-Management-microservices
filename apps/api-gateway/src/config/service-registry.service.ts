@@ -90,16 +90,13 @@ export class ServiceRegistryService {
   resolveTarget(path: string): DownstreamServiceTarget | null {
     const normalizedPath = path.startsWith('/') ? path : `/${path}`;
 
-    for (const target of Object.values(this.getTargets())) {
-      if (
-        normalizedPath === target.basePath ||
-        normalizedPath.startsWith(`${target.basePath}/`)
-      ) {
-        return target;
-      }
-    }
-
-    return null;
+    return (
+      Object.values(this.getTargets()).find(
+        (target) =>
+          normalizedPath === target.basePath ||
+          normalizedPath.startsWith(`${target.basePath}/`),
+      ) ?? null
+    );
   }
 
   private getRequired(key: string, fallback: string): string {

@@ -13,8 +13,21 @@ export class GatewayProxyController {
     private readonly gatewayProxyService: GatewayProxyService,
   ) {}
 
-  @All('*')
-  async proxy(
+  @All([
+    'auth',
+    'auth/*path',
+    'members',
+    'members/*path',
+    'categories',
+    'categories/*path',
+    'books',
+    'books/*path',
+    'borrows',
+    'borrows/*path',
+    'fines',
+    'fines/*path',
+  ])
+  async forward(
     @Req() request: RequestWithContext,
     @Res() response: Response,
   ): Promise<void> {

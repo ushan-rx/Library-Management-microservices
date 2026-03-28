@@ -4,6 +4,10 @@ import {
   bookBadRequest,
   bookServiceUnavailable,
 } from '../common/book-response.helpers';
+import {
+  createDownstreamHeaders,
+  createDownstreamRequestContext,
+} from './downstream-request.util';
 
 interface CategoryExistenceResponse {
   success: boolean;
@@ -31,11 +35,39 @@ export class CategoryClient {
     const categoryServiceBaseUrl =
       this.configService.get<string>('CATEGORY_SERVICE_BASE_URL') ??
       'http://localhost:3004';
+    const requestContext = createDownstreamRequestContext();
+
+    this.logger.log(
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        level: 'log',
+        service: process.env.BOOK_SERVICE_NAME ?? 'book-service',
+        operation: 'validate-category',
+        downstreamService: 'category-service',
+        categoryId,
+        correlationId: requestContext.correlationId,
+      }),
+    );
 
     const response = await fetch(
       `${categoryServiceBaseUrl}/categories/${categoryId}/existence`,
+      {
+        headers: createDownstreamHeaders(requestContext.correlationId),
+      },
     ).catch((error: unknown) => {
-      this.logger.error(`Category validation request failed: ${String(error)}`);
+      this.logger.error(
+        JSON.stringify({
+          timestamp: new Date().toISOString(),
+          level: 'error',
+          service: process.env.BOOK_SERVICE_NAME ?? 'book-service',
+          operation: 'validate-category',
+          downstreamService: 'category-service',
+          categoryId,
+          correlationId: requestContext.correlationId,
+          durationMs: Date.now() - requestContext.startedAt,
+          error: String(error),
+        }),
+      );
       throw bookServiceUnavailable(
         'Category service is unavailable',
         'CATEGORY_SERVICE_UNAVAILABLE',
@@ -43,6 +75,19 @@ export class CategoryClient {
     });
 
     if (!response.ok) {
+      this.logger.error(
+        JSON.stringify({
+          timestamp: new Date().toISOString(),
+          level: 'error',
+          service: process.env.BOOK_SERVICE_NAME ?? 'book-service',
+          operation: 'validate-category',
+          downstreamService: 'category-service',
+          categoryId,
+          correlationId: requestContext.correlationId,
+          durationMs: Date.now() - requestContext.startedAt,
+          statusCode: response.status,
+        }),
+      );
       throw bookServiceUnavailable(
         'Category service returned an unexpected response',
         'CATEGORY_SERVICE_UNAVAILABLE',
@@ -56,5 +101,19 @@ export class CategoryClient {
         'INVALID_CATEGORY',
       );
     }
+
+    this.logger.log(
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        level: 'log',
+        service: process.env.BOOK_SERVICE_NAME ?? 'book-service',
+        operation: 'validate-category',
+        downstreamService: 'category-service',
+        categoryId,
+        correlationId: requestContext.correlationId,
+        durationMs: Date.now() - requestContext.startedAt,
+        statusCode: response.status,
+      }),
+    );
   }
 }

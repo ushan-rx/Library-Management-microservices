@@ -1,10 +1,17 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  RequestTimeoutException,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { ServiceRegistryService } from '../config/service-registry.service';
 import { RequestWithContext } from '../platform/request-context/request-context.types';
 
 @Injectable()
 export class GatewayProxyService {
+  private readonly upstreamTimeoutMs = 5000;
+
   constructor(private readonly serviceRegistry: ServiceRegistryService) {}
 
   async forward(
@@ -13,115 +20,70 @@ export class GatewayProxyService {
   ): Promise<void> {
     const target = this.serviceRegistry.resolveTarget(request.path);
     if (!target) {
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Route not found',
-          error: {
-            code: 'ROUTE_NOT_FOUND',
-            details: [],
-          },
-        },
-        HttpStatus.NOT_FOUND,
-      );
+      throw new NotFoundException('Route not found');
     }
+    request.downstreamService = target.basePath;
 
-    const upstreamUrl = new URL(
-      `${target.baseUrl}${request.originalUrl ?? request.url}`,
-    );
     const abortController = new AbortController();
-    const timeout = setTimeout(() => abortController.abort(), 5000);
+    const timeout = setTimeout(
+      () => abortController.abort(),
+      this.upstreamTimeoutMs,
+    );
 
     try {
-      const upstreamResponse = await fetch(upstreamUrl, {
-        method: request.method,
-        headers: this.buildForwardHeaders(request),
-        body: this.getForwardBody(request),
-        signal: abortController.signal,
+      const upstreamResponse = await fetch(
+        `${target.baseUrl}${request.originalUrl ?? request.url}`,
+        {
+          method: request.method,
+          headers: this.buildHeaders(request),
+          body: this.buildBody(request),
+          signal: abortController.signal,
+        },
+      ).catch((error: unknown) => {
+        if (error instanceof Error && error.name === 'AbortError') {
+          throw new RequestTimeoutException('Downstream service timeout');
+        }
+
+        throw new ServiceUnavailableException('Downstream service unavailable');
       });
 
-      clearTimeout(timeout);
-
-      const responseText = await upstreamResponse.text();
       const responseContentType =
-        upstreamResponse.headers.get('content-type') ?? 'application/json';
-
+        upstreamResponse.headers.get('content-type') ?? '';
       response.status(upstreamResponse.status);
-      response.setHeader('x-correlation-id', request.correlationId ?? '');
-      response.setHeader('content-type', responseContentType);
-
-      if (!responseText) {
-        response.send();
-        return;
-      }
 
       if (responseContentType.includes('application/json')) {
-        const parsed = JSON.parse(responseText) as unknown;
-        response.json(parsed);
+        response.json((await upstreamResponse.json()) as unknown);
         return;
       }
 
-      response.send(responseText);
-    } catch (error: unknown) {
+      response.send(await upstreamResponse.text());
+    } finally {
       clearTimeout(timeout);
-
-      if (error instanceof DOMException && error.name === 'AbortError') {
-        throw new HttpException(
-          {
-            success: false,
-            message: 'Downstream service timeout',
-            error: {
-              code: 'UPSTREAM_TIMEOUT',
-              details: [],
-            },
-          },
-          HttpStatus.GATEWAY_TIMEOUT,
-        );
-      }
-
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Downstream service unavailable',
-          error: {
-            code: 'UPSTREAM_UNAVAILABLE',
-            details: [],
-          },
-        },
-        HttpStatus.SERVICE_UNAVAILABLE,
-      );
     }
   }
 
-  private buildForwardHeaders(request: RequestWithContext): HeadersInit {
+  private buildHeaders(request: RequestWithContext): Headers {
     const headers = new Headers();
 
-    for (const [key, value] of Object.entries(request.headers)) {
-      if (value === undefined) {
-        continue;
-      }
+    const acceptHeader = request.header('accept');
+    const authorizationHeader = request.header('authorization');
+    const contentTypeHeader = request.header('content-type');
 
-      if (
-        [
-          'host',
-          'content-length',
-          'x-user-id',
-          'x-user-role',
-          'x-username',
-        ].includes(key)
-      ) {
-        continue;
-      }
-
-      if (Array.isArray(value)) {
-        headers.set(key, value.join(','));
-        continue;
-      }
-
-      headers.set(key, value);
+    if (acceptHeader) {
+      headers.set('accept', acceptHeader);
     }
 
-    headers.set('x-correlation-id', request.correlationId ?? '');
+    if (contentTypeHeader) {
+      headers.set('content-type', contentTypeHeader);
+    }
+
+    if (authorizationHeader) {
+      headers.set('authorization', authorizationHeader);
+    }
+
+    if (request.correlationId) {
+      headers.set('x-correlation-id', request.correlationId);
+    }
 
     if (request.authenticatedUser) {
       headers.set('x-user-id', request.authenticatedUser.id);
@@ -134,16 +96,19 @@ export class GatewayProxyService {
     return headers;
   }
 
-  private getForwardBody(request: RequestWithContext): BodyInit | undefined {
+  private buildBody(request: RequestWithContext): string | undefined {
     if (request.method === 'GET' || request.method === 'HEAD') {
       return undefined;
     }
 
-    const requestBody = request.body as Record<string, unknown> | undefined;
-    if (!requestBody || Object.keys(requestBody).length === 0) {
+    if (request.body === undefined || request.body === null) {
       return undefined;
     }
 
-    return JSON.stringify(requestBody);
+    if (typeof request.body === 'string') {
+      return request.body;
+    }
+
+    return JSON.stringify(request.body);
   }
 }

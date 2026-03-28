@@ -26,3 +26,11 @@
 - Files: apps/member-service/src/member-service.module.ts, apps/member-service/src/bootstrap.ts, apps/member-service/src/main.ts, apps/member-service/src/members/member.controller.ts, apps/member-service/src/members/member.service.ts, apps/member-service/src/members/member.service.spec.ts, apps/member-service/src/members/member.repository.ts, apps/member-service/src/members/in-memory-member.repository.ts, apps/member-service/src/members/prisma-member.repository.ts, apps/member-service/src/platform/roles/member-role.enum.ts, apps/member-service/src/platform/roles/roles.decorator.ts, apps/member-service/src/platform/roles/roles.guard.ts, apps/member-service/src/prisma/prisma.service.ts, apps/member-service/test/app.e2e-spec.ts, apps/member-service/prisma/schema.prisma, package.json, .env.example, README.md
 - Impact: Member service is now a runnable business service with validated CRUD behavior, eligibility support for borrow flows, and service-level role protection.
 - Notes: Eligibility endpoint is left unguarded to support future internal borrow-service checks without premature gateway forwarding changes.
+## 2026-03-28T11:15:00+05:30
+
+- Scope: member-service
+- Type: feature
+- Summary: Enabled Swagger documentation for member routes, documented request DTOs, and added smoke tests for `/docs` and `/docs-json`.
+- Files: apps/shared/configure-swagger.ts, apps/member-service/src/bootstrap.ts, apps/member-service/src/members/member.controller.ts, apps/member-service/src/members/dto/create-member.dto.ts, apps/member-service/src/members/dto/list-members.query.dto.ts, apps/member-service/src/members/dto/update-member.dto.ts, apps/member-service/test/app.e2e-spec.ts, README.md, package.json, package-lock.json
+- Impact: Member Service now exposes a usable OpenAPI surface for CRUD and eligibility workflows.
+- Notes: No API contract deviation.

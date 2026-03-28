@@ -10,6 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../platform/roles/roles.decorator';
 import { BorrowRole } from '../platform/roles/borrow-role.enum';
 import { RolesGuard } from '../platform/roles/roles.guard';
@@ -20,10 +21,12 @@ import { ReturnBookDto } from './dto/return-book.dto';
 import { UpdateBorrowDto } from './dto/update-borrow.dto';
 
 @Controller('borrows')
+@ApiTags('borrows')
 export class BorrowController {
   constructor(private readonly borrowService: BorrowService) {}
 
   @Get('health')
+  @ApiOperation({ summary: 'Get borrow-service health status' })
   health() {
     return this.borrowService.health();
   }
@@ -31,6 +34,10 @@ export class BorrowController {
   @Post()
   @UseGuards(RolesGuard)
   @Roles(BorrowRole.ADMIN, BorrowRole.LIBRARIAN)
+  @ApiSecurity('x-user-role')
+  @ApiOperation({
+    summary: 'Create a borrow record and decrement book inventory',
+  })
   create(
     @Body() createBorrowDto: CreateBorrowDto,
     @Headers('x-user-id') userId?: string,
@@ -39,11 +46,13 @@ export class BorrowController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'List borrow records with optional filters' })
   list(@Query() query: ListBorrowsQueryDto) {
     return this.borrowService.list(query);
   }
 
   @Get(':borrowId')
+  @ApiOperation({ summary: 'Get a borrow record by id' })
   getById(@Param('borrowId') borrowId: string) {
     return this.borrowService.getById(borrowId);
   }
@@ -51,6 +60,8 @@ export class BorrowController {
   @Put(':borrowId')
   @UseGuards(RolesGuard)
   @Roles(BorrowRole.ADMIN, BorrowRole.LIBRARIAN)
+  @ApiSecurity('x-user-role')
+  @ApiOperation({ summary: 'Update a borrow record by id' })
   update(
     @Param('borrowId') borrowId: string,
     @Body() updateBorrowDto: UpdateBorrowDto,
@@ -62,6 +73,10 @@ export class BorrowController {
   @HttpCode(200)
   @UseGuards(RolesGuard)
   @Roles(BorrowRole.ADMIN, BorrowRole.LIBRARIAN)
+  @ApiSecurity('x-user-role')
+  @ApiOperation({
+    summary: 'Return a borrowed book and generate overdue fine if needed',
+  })
   returnBook(
     @Param('borrowId') borrowId: string,
     @Body() returnBookDto: ReturnBookDto,
@@ -71,6 +86,7 @@ export class BorrowController {
   }
 
   @Get(':borrowId/overdue-status')
+  @ApiOperation({ summary: 'Get overdue status for a borrow record' })
   overdueStatus(@Param('borrowId') borrowId: string) {
     return this.borrowService.overdueStatus(borrowId);
   }

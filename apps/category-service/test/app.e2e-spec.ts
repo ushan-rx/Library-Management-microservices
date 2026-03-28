@@ -38,6 +38,13 @@ interface HealthData {
   service: string;
 }
 
+interface SwaggerDocument {
+  info: {
+    title: string;
+  };
+  paths: Record<string, unknown>;
+}
+
 describe('Category service (e2e)', () => {
   let app: INestApplication;
 
@@ -141,5 +148,21 @@ describe('Category service (e2e)', () => {
     const body = response.body as SuccessResponse<HealthData>;
     expect(body.success).toBe(true);
     expect(body.data.service).toBe('category-service');
+  });
+
+  it('exposes Swagger docs endpoints', async () => {
+    await request(app.getHttpServer() as Server)
+      .get('/docs-json')
+      .expect(200)
+      .expect(({ body }) => {
+        const swaggerDocument = body as SwaggerDocument;
+
+        expect(swaggerDocument.info.title).toBe('Category Service');
+        expect(swaggerDocument.paths['/categories']).toBeDefined();
+      });
+
+    await request(app.getHttpServer() as Server)
+      .get('/docs')
+      .expect(200);
   });
 });

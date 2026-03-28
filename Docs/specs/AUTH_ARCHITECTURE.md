@@ -4,8 +4,6 @@
 
 This document defines how authentication and authorization should work across the Library Management System.
 
-The goal is to implement proper auth for the project while keeping it practical and maintainable.
-
 ---
 
 ## 2. Auth model summary
@@ -170,17 +168,17 @@ For the project, gateway validation plus service role checks is usually sufficie
 
 ## 8. Role-based authorization matrix
 
-| Route Area | ADMIN | LIBRARIAN | MEMBER |
-|---|---:|---:|---:|
-| Auth profile | yes | yes | yes |
-| Create auth user | yes | optional | no |
-| Manage members | yes | yes | no |
-| Manage categories | yes | yes | no |
-| Manage books | yes | yes | no |
-| Create borrow | yes | yes | no |
-| Process return | yes | yes | no |
-| View fines | yes | yes | limited future |
-| Record fine payment | yes | yes | no |
+| Route Area          | ADMIN | LIBRARIAN |         MEMBER |
+| ------------------- | ----: | --------: | -------------: |
+| Auth profile        |   yes |       yes |            yes |
+| Create auth user    |   yes |  optional |             no |
+| Manage members      |   yes |       yes |             no |
+| Manage categories   |   yes |       yes |             no |
+| Manage books        |   yes |       yes |             no |
+| Create borrow       |   yes |       yes |             no |
+| Process return      |   yes |       yes |             no |
+| View fines          |   yes |       yes | limited future |
+| Record fine payment |   yes |       yes |             no |
 
 ---
 
@@ -209,6 +207,7 @@ These are different concepts.
 Represents a system account that can log in.
 
 ### 10.2 Library member
+
 Represents a person registered with the library business domain.
 
 A library member record does not have to map one-to-one to an auth user in MVP.
@@ -338,4 +337,3 @@ These credentials are for local development only and must be documented in seed 
 - auth users are separate from library members
 - no event-based auth flows
 - no refresh-token complexity unless later added intentionally
-
