@@ -1,0 +1,17 @@
+.git
+.gitignore
+node_modules
+dist
+coverage
+docs
+test
+docker/postgres
+PROJECT_STRUCTURE.md
+README.md
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+docker-compose.override.yml

@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import type { StringValue } from 'ms';
+import { resolveConfigValue } from '../../shared/config/runtime-config.util';
+import { MetricsInterceptor } from '../../shared/observability/metrics.interceptor';
+import { MetricsService } from '../../shared/observability/metrics.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
 import { PasswordService } from './auth/password.service';
+import { MetricsController } from './metrics/metrics.controller';
 import { PrismaService } from './prisma/prisma.service';
 import { AUTH_USER_REPOSITORY } from './users/auth-user.repository';
 import { InMemoryAuthUserRepository } from './users/in-memory-auth-user.repository';
@@ -20,18 +25,29 @@ import { PrismaAuthUserRepository } from './users/prisma-auth-user.repository';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         secret:
-          configService.get<string>('JWT_SECRET') ?? 'change-me-in-local-env',
+          resolveConfigValue(
+            configService,
+            'JWT_SECRET',
+            'change-me-in-local-env',
+          ) ?? 'change-me-in-local-env',
         signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRES_IN') ?? '1h',
+          expiresIn:
+            (resolveConfigValue(
+              configService,
+              'JWT_EXPIRES_IN',
+              '1h',
+            ) as StringValue) ?? '1h',
         },
       }),
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, MetricsController],
   providers: [
     AuthService,
     AuthGuard,
     PasswordService,
+    MetricsInterceptor,
+    MetricsService,
     PrismaService,
     InMemoryAuthUserRepository,
     PrismaAuthUserRepository,

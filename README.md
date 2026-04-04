@@ -80,6 +80,10 @@ Important references:
 - [docs/specs/DATA_SCHEMAS.md](./docs/specs/DATA_SCHEMAS.md)
 - [docs/specs/API_GATEWAY.md](./docs/specs/API_GATEWAY.md)
 - [docs/specs/AUTH_ARCHITECTURE.md](./docs/specs/AUTH_ARCHITECTURE.md)
+- [docs/agents/MICROSERVICES_EVOLUTION_PLAN.md](./docs/agents/MICROSERVICES_EVOLUTION_PLAN.md)
+- [docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md](./docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md)
+- [docs/deployment/CONFIGURATION_AND_SECRETS.md](./docs/deployment/CONFIGURATION_AND_SECRETS.md)
+- [docs/deployment/OBSERVABILITY.md](./docs/deployment/OBSERVABILITY.md)
 
 ## Prerequisites
 
@@ -94,12 +98,14 @@ Copy values from `.env.example` into your local environment as needed.
 Main environment file:
 
 - [`.env.example`](./.env.example)
+- [`.env.compose.example`](./.env.compose.example)
 
 The project uses:
 
 - one Dockerized PostgreSQL container
 - one logical database per service
 - shared JWT secret between Auth Service and API Gateway
+- optional `*_FILE` runtime variables for file-backed secrets and database URLs
 
 ## Installation
 
@@ -127,6 +133,30 @@ Stop PostgreSQL:
 npm run docker:down
 ```
 
+Start the full multi-container stack:
+
+```bash
+npm run docker:up:all
+```
+
+Tail container logs:
+
+```bash
+npm run docker:logs:all
+```
+
+Build a single service image:
+
+```bash
+npm run docker:build:api-gateway
+npm run docker:build:auth-service
+npm run docker:build:member-service
+npm run docker:build:category-service
+npm run docker:build:book-service
+npm run docker:build:borrow-service
+npm run docker:build:fine-payment-service
+```
+
 ## Run the System Locally
 
 Start each service in a separate terminal:
@@ -142,6 +172,51 @@ npm run start
 ```
 
 The final `npm run start` command starts the API Gateway.
+
+## Run the System with Docker Compose
+
+Build and start the full stack:
+
+```bash
+npm run docker:up:all
+```
+
+This starts:
+
+- PostgreSQL
+- Auth Service
+- Member Service
+- Category Service
+- Book Service
+- Borrow Service
+- Fine Payment Service
+- API Gateway
+
+In Compose mode, service-to-service traffic uses internal DNS names such as `auth-service`, `book-service`, and `postgres-core`, while the public entry point remains:
+
+- `http://localhost:3000`
+
+## Independent Container Deployment
+
+Each application now has its own Dockerfile under `apps/<service>/Dockerfile`.
+
+Use the per-service image build commands when you want to ship or test a service independently of the full stack. The required runtime variables, ports, and health endpoints are documented in:
+
+- [docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md](./docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md)
+
+## Configuration and Secrets
+
+The runtime now supports both direct environment variables and file-backed `*_FILE` variables for secrets and database URLs.
+
+Examples:
+
+- `JWT_SECRET` or `JWT_SECRET_FILE`
+- `AUTH_DATABASE_URL` or `AUTH_DATABASE_URL_FILE`
+- `BOOK_DATABASE_URL` or `BOOK_DATABASE_URL_FILE`
+
+Details and deployment guidance are documented in:
+
+- [docs/deployment/CONFIGURATION_AND_SECRETS.md](./docs/deployment/CONFIGURATION_AND_SECRETS.md)
 
 ## Main Entry Point
 
@@ -244,6 +319,7 @@ Current observability support includes:
 - downstream route-group context in gateway logs
 - correlation ID propagation in downstream HTTP calls from book-service and borrow-service
 - structured downstream service-call logs for validation, inventory, and fine operations
+- Prometheus-style `/metrics` endpoints on the gateway and all backend services
 
 ## Changelogs
 

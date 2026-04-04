@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MetricsInterceptor } from '../../shared/observability/metrics.interceptor';
+import { MetricsService } from '../../shared/observability/metrics.service';
 import { BorrowController } from './borrows/borrow.controller';
 import { BORROW_REPOSITORY } from './borrows/borrow.repository';
 import { BorrowService } from './borrows/borrow.service';
@@ -8,6 +10,7 @@ import { PrismaBorrowRepository } from './borrows/prisma-borrow.repository';
 import { BookClient } from './integrations/book.client';
 import { FineClient } from './integrations/fine.client';
 import { MemberClient } from './integrations/member.client';
+import { MetricsController } from './metrics/metrics.controller';
 import { RolesGuard } from './platform/roles/roles.guard';
 import { PrismaService } from './prisma/prisma.service';
 
@@ -18,10 +21,12 @@ import { PrismaService } from './prisma/prisma.service';
       envFilePath: ['.env', '.env.example'],
     }),
   ],
-  controllers: [BorrowController],
+  controllers: [BorrowController, MetricsController],
   providers: [
     BorrowService,
     RolesGuard,
+    MetricsInterceptor,
+    MetricsService,
     PrismaService,
     MemberClient,
     BookClient,

@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { resolveConfigValue } from '../../../../shared/config/runtime-config.util';
 import { RequestWithContext } from '../request-context/request-context.types';
 import { GatewayJwtPayload } from './gateway-jwt-payload.interface';
 
@@ -75,7 +76,11 @@ export class GatewayAuthService {
 
   private authServiceBaseUrl(): string {
     return (
-      this.configService.get<string>('AUTH_SERVICE_BASE_URL') ??
+      resolveConfigValue(
+        this.configService,
+        'AUTH_SERVICE_BASE_URL',
+        'http://localhost:3001',
+      ) ??
       'http://localhost:3001'
     );
   }

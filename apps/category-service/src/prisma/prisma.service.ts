@@ -5,6 +5,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { resolveConfigValue } from '../../../shared/config/runtime-config.util';
 import { PrismaClient } from '../../prisma/generated/client';
 
 @Injectable()
@@ -18,7 +19,7 @@ export class PrismaService
     super({
       datasources: {
         db: {
-          url: configService.get<string>('CATEGORY_DATABASE_URL'),
+          url: resolveConfigValue(configService, 'CATEGORY_DATABASE_URL'),
         },
       },
     });

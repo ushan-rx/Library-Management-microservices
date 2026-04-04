@@ -34,3 +34,39 @@
 - Files: apps/shared/configure-swagger.ts, apps/member-service/src/bootstrap.ts, apps/member-service/src/members/member.controller.ts, apps/member-service/src/members/dto/create-member.dto.ts, apps/member-service/src/members/dto/list-members.query.dto.ts, apps/member-service/src/members/dto/update-member.dto.ts, apps/member-service/test/app.e2e-spec.ts, README.md, package.json, package-lock.json
 - Impact: Member Service now exposes a usable OpenAPI surface for CRUD and eligibility workflows.
 - Notes: No API contract deviation.
+
+## 2026-03-28T20:40:00+05:30
+
+- Scope: member-service
+- Type: chore
+- Summary: Added container build support and Docker Compose runtime wiring for Member Service, including automatic schema preparation on container startup.
+- Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: Member Service can now run independently as a container in the local multi-service stack.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:05:00+05:30
+
+- Scope: member-service
+- Type: chore
+- Summary: Added an app-owned Dockerfile and independent image build contract for Member Service.
+- Files: apps/member-service/Dockerfile, docker-compose.yml, package.json, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md
+- Impact: Member Service can now be built and deployed with an explicit service-owned container definition.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:30:00+05:30
+
+- Scope: member-service
+- Type: chore
+- Summary: Added file-backed runtime configuration support for Member Service database URL inputs.
+- Files: apps/shared/config/runtime-config.util.ts, apps/shared/config/runtime-config.util.spec.ts, apps/member-service/src/main.ts, apps/member-service/src/prisma/prisma.service.ts, docker-compose.yml, .env.example, .env.compose.example, docs/deployment/CONFIGURATION_AND_SECRETS.md
+- Impact: Member Service can now resolve its database configuration from mounted files as well as direct environment variables.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:55:00+05:30
+
+- Scope: member-service
+- Type: feature
+- Summary: Added shared request metrics collection and a Prometheus-style `/metrics` endpoint to Member Service.
+- Files: apps/shared/observability/metrics.service.ts, apps/shared/observability/metrics.interceptor.ts, apps/member-service/src/member-service.module.ts, apps/member-service/src/bootstrap.ts, apps/member-service/src/metrics/metrics.controller.ts, README.md, docs/deployment/OBSERVABILITY.md
+- Impact: Member Service now exposes process-local request metrics for operational visibility.
+- Notes: No API contract deviation.

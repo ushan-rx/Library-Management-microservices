@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MetricsInterceptor } from '../../shared/observability/metrics.interceptor';
+import { MetricsService } from '../../shared/observability/metrics.service';
 import { FINE_REPOSITORY } from './fines/fine.repository';
 import { FineController } from './fines/fine.controller';
 import { FineService } from './fines/fine.service';
 import { InMemoryFineRepository } from './fines/in-memory-fine.repository';
+import { MetricsController } from './metrics/metrics.controller';
 import { PrismaFineRepository } from './fines/prisma-fine.repository';
 import { RolesGuard } from './platform/roles/roles.guard';
 import { PrismaService } from './prisma/prisma.service';
@@ -15,10 +18,12 @@ import { PrismaService } from './prisma/prisma.service';
       envFilePath: ['.env', '.env.example'],
     }),
   ],
-  controllers: [FineController],
+  controllers: [FineController, MetricsController],
   providers: [
     FineService,
     RolesGuard,
+    MetricsInterceptor,
+    MetricsService,
     PrismaService,
     InMemoryFineRepository,
     PrismaFineRepository,

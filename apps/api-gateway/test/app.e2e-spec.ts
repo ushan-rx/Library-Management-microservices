@@ -98,4 +98,17 @@ describe('ApiGateway gateway foundation (e2e)', () => {
         expect(swaggerDocument.paths['/health']).toBeDefined();
       });
   });
+
+  it('exposes Prometheus-style metrics', async () => {
+    await request(app.getHttpServer() as Server).get('/health').expect(200);
+
+    await request(app.getHttpServer() as Server)
+      .get('/metrics')
+      .expect(200)
+      .expect(({ text, headers }) => {
+        expect(headers['content-type']).toContain('text/plain');
+        expect(text).toContain('library_service_info{service="api-gateway"} 1');
+        expect(text).toContain('library_http_requests_total');
+      });
+  });
 });

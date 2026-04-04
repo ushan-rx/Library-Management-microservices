@@ -3,12 +3,13 @@ import {
   categoryConflict,
   categoryNotFound,
 } from '../common/category-response.helpers';
-import { CATEGORY_REPOSITORY, CategoryRepository } from './category.repository';
+import { CATEGORY_REPOSITORY } from './category.repository';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { ListCategoriesQueryDto } from './dto/list-categories.query.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryStatus } from './enums/category-status.enum';
 import { Category } from './interfaces/category.interface';
+import type { CategoryRepository } from './category.repository';
 
 @Injectable()
 export class CategoryService {

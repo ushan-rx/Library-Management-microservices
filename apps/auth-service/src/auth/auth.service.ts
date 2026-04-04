@@ -15,8 +15,8 @@ import { PasswordService } from './password.service';
 import { AuthUser } from './interfaces/auth-user.interface';
 import {
   AUTH_USER_REPOSITORY,
-  AuthUserRepository,
 } from '../users/auth-user.repository';
+import type { AuthUserRepository } from '../users/auth-user.repository';
 
 @Injectable()
 export class AuthService {

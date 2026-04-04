@@ -13,7 +13,7 @@ import { RegisterDto } from './dto/register.dto';
 import { ValidateTokenDto } from './dto/validate-token.dto';
 import { AuthGuard } from './auth.guard';
 import { CurrentUser } from './current-user.decorator';
-import { JwtPayload } from './interfaces/jwt-payload.interface';
+import type { JwtPayload } from './interfaces/jwt-payload.interface';
 
 @Controller('auth')
 @ApiTags('auth')

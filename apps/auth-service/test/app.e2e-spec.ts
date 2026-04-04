@@ -178,4 +178,17 @@ describe('Auth service (e2e)', () => {
       .get('/docs')
       .expect(200);
   });
+
+  it('exposes Prometheus-style metrics', async () => {
+    await request(app.getHttpServer() as Server).get('/auth/health').expect(200);
+
+    await request(app.getHttpServer() as Server)
+      .get('/metrics')
+      .expect(200)
+      .expect(({ text, headers }) => {
+        expect(headers['content-type']).toContain('text/plain');
+        expect(text).toContain('library_service_info{service="auth-service"} 1');
+        expect(text).toContain('library_http_requests_total');
+      });
+  });
 });

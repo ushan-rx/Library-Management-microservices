@@ -42,3 +42,39 @@
 - Files: apps/book-service/src/integrations/category.client.ts, apps/book-service/src/integrations/downstream-request.util.ts, README.md
 - Impact: Category validation failures and timings are now easier to trace from book-service logs without changing request or response contracts.
 - Notes: No API contract deviation.
+
+## 2026-03-28T20:40:00+05:30
+
+- Scope: book-service
+- Type: chore
+- Summary: Added container build support and Docker Compose runtime wiring for Book Service, including internal routing to Category Service and automatic schema preparation.
+- Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: Book Service can now run as an isolated container with container-network dependencies resolved through service names.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:05:00+05:30
+
+- Scope: book-service
+- Type: chore
+- Summary: Added an app-owned Dockerfile and independent image build contract for Book Service.
+- Files: apps/book-service/Dockerfile, docker-compose.yml, package.json, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md
+- Impact: Book Service can now be built and deployed with an explicit service-owned container definition.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:30:00+05:30
+
+- Scope: book-service
+- Type: chore
+- Summary: Added file-backed runtime configuration support for Book Service database URL inputs.
+- Files: apps/shared/config/runtime-config.util.ts, apps/shared/config/runtime-config.util.spec.ts, apps/book-service/src/main.ts, apps/book-service/src/prisma/prisma.service.ts, docker-compose.yml, .env.example, .env.compose.example, docs/deployment/CONFIGURATION_AND_SECRETS.md
+- Impact: Book Service can now resolve its database configuration from mounted files as well as direct environment variables.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:55:00+05:30
+
+- Scope: book-service
+- Type: feature
+- Summary: Added shared request metrics collection and a Prometheus-style `/metrics` endpoint to Book Service.
+- Files: apps/shared/observability/metrics.service.ts, apps/shared/observability/metrics.interceptor.ts, apps/book-service/src/book-service.module.ts, apps/book-service/src/bootstrap.ts, apps/book-service/src/metrics/metrics.controller.ts, README.md, docs/deployment/OBSERVABILITY.md
+- Impact: Book Service now exposes process-local request metrics for operational visibility.
+- Notes: No API contract deviation.

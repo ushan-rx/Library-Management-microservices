@@ -42,3 +42,39 @@
 - Files: apps/borrow-service/src/integrations/member.client.ts, apps/borrow-service/src/integrations/book.client.ts, apps/borrow-service/src/integrations/fine.client.ts, apps/borrow-service/src/integrations/downstream-request.util.ts, README.md
 - Impact: Borrow orchestration now produces traceable downstream call logs with durations, target services, and correlation IDs for both success and failure paths.
 - Notes: No API contract deviation.
+
+## 2026-03-28T20:40:00+05:30
+
+- Scope: borrow-service
+- Type: chore
+- Summary: Added container build support and Docker Compose runtime wiring for Borrow Service, including service-name based downstream URLs and automatic schema preparation.
+- Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: Borrow Service can now run as an isolated container in a full local microservice runtime.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:05:00+05:30
+
+- Scope: borrow-service
+- Type: chore
+- Summary: Added an app-owned Dockerfile and independent image build contract for Borrow Service.
+- Files: apps/borrow-service/Dockerfile, docker-compose.yml, package.json, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md
+- Impact: Borrow Service can now be built and deployed with an explicit service-owned container definition.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:30:00+05:30
+
+- Scope: borrow-service
+- Type: chore
+- Summary: Added file-backed runtime configuration support for Borrow Service database URL inputs.
+- Files: apps/shared/config/runtime-config.util.ts, apps/shared/config/runtime-config.util.spec.ts, apps/borrow-service/src/main.ts, apps/borrow-service/src/prisma/prisma.service.ts, docker-compose.yml, .env.example, .env.compose.example, docs/deployment/CONFIGURATION_AND_SECRETS.md
+- Impact: Borrow Service can now resolve its database configuration from mounted files as well as direct environment variables.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:55:00+05:30
+
+- Scope: borrow-service
+- Type: feature
+- Summary: Added shared request metrics collection and a Prometheus-style `/metrics` endpoint to Borrow Service.
+- Files: apps/shared/observability/metrics.service.ts, apps/shared/observability/metrics.interceptor.ts, apps/borrow-service/src/borrow-service.module.ts, apps/borrow-service/src/bootstrap.ts, apps/borrow-service/src/metrics/metrics.controller.ts, README.md, docs/deployment/OBSERVABILITY.md
+- Impact: Borrow Service now exposes process-local request metrics for operational visibility.
+- Notes: No API contract deviation.

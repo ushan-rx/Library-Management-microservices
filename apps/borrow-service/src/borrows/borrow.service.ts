@@ -10,6 +10,8 @@ import { FineClient } from '../integrations/fine.client';
 import { MemberClient } from '../integrations/member.client';
 import {
   BORROW_REPOSITORY,
+} from './borrow.repository';
+import type {
   BorrowRepository,
   BorrowUpdateData,
 } from './borrow.repository';

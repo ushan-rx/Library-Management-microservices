@@ -71,3 +71,39 @@
 - Files: README.md, PROJECT_STRUCTURE.md, docs/agents/PHASE_14_RELEASE_CANDIDATE.md
 - Impact: The repository handoff docs now match the implemented system and the final verification state.
 - Notes: No API contract deviation.
+
+## 2026-03-28T20:40:00+05:30
+
+- Scope: api-gateway
+- Type: chore
+- Summary: Added container-ready full-stack Docker Compose support and wired the gateway for service-name based runtime routing inside the container network.
+- Files: docker-compose.yml, docker/node-service.Dockerfile, package.json, README.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: The gateway can now participate in a multi-container local runtime instead of depending only on manually started local processes.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:05:00+05:30
+
+- Scope: api-gateway
+- Type: chore
+- Summary: Switched the deployment model to explicit per-app Dockerfiles and documented independent image build and runtime contracts.
+- Files: apps/api-gateway/Dockerfile, docker-compose.yml, package.json, README.md, docs/deployment/INDEPENDENT_SERVICE_DEPLOYMENT.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: The gateway image is now explicitly owned by its application directory, which makes independent builds and deployment contracts clearer.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:30:00+05:30
+
+- Scope: api-gateway
+- Type: chore
+- Summary: Added file-backed runtime configuration support for gateway secrets and upstream URLs and documented the new configuration model.
+- Files: apps/shared/config/runtime-config.util.ts, apps/shared/config/runtime-config.util.spec.ts, apps/api-gateway/src/main.ts, apps/api-gateway/src/config/gateway.config.ts, apps/api-gateway/src/config/service-registry.service.ts, apps/api-gateway/src/platform/auth/gateway-auth.service.ts, docker-compose.yml, .env.example, .env.compose.example, README.md, docs/deployment/CONFIGURATION_AND_SECRETS.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: The gateway can now resolve sensitive runtime values from `*_FILE` inputs, which prepares the deployment model for mounted secrets and secret managers.
+- Notes: No API contract deviation.
+
+## 2026-03-28T21:55:00+05:30
+
+- Scope: api-gateway
+- Type: feature
+- Summary: Added shared request metrics collection and a Prometheus-style `/metrics` endpoint to the gateway.
+- Files: apps/shared/observability/metrics.service.ts, apps/shared/observability/metrics.interceptor.ts, apps/shared/observability/metrics.service.spec.ts, apps/api-gateway/src/api-gateway.module.ts, apps/api-gateway/src/bootstrap.ts, apps/api-gateway/src/metrics/metrics.controller.ts, apps/api-gateway/src/routing/route-access-policy.service.ts, apps/api-gateway/test/app.e2e-spec.ts, README.md, docs/deployment/OBSERVABILITY.md, docs/agents/MICROSERVICES_EVOLUTION_PLAN.md
+- Impact: The gateway now exposes process-local request metrics that can be scraped or inspected during operations and demos.
+- Notes: No API contract deviation.
