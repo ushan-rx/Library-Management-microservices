@@ -124,4 +124,3 @@ npm run build:borrow-service
 npm run build:fine-payment-service
 ```
 
-Implementation must follow the phased delivery rules in `docs/agents/AGENT_GUIDE.md`.
